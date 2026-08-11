@@ -1,0 +1,247 @@
+.wrap {
+  min-height: 100vh;
+  padding: 1.8rem clamp(1rem, 4vw, 3rem) 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  position: relative;
+  z-index: 1;
+  align-items: flex-start;
+}
+
+@media (min-width: 1100px) {
+  .wrap {
+    display: grid;
+    grid-template-columns: minmax(360px, 520px) minmax(0, 1fr);
+    column-gap: clamp(2rem, 4vw, 4rem);
+    row-gap: 1.4rem;
+    align-items: start;
+    align-content: start;
+  }
+
+  .wrap > * {
+    grid-column: 1;
+  }
+
+  .wrap > .topRow {
+    grid-column: 1 / -1;
+  }
+
+  .wrap > .row {
+    grid-column: 2;
+    grid-row: 2 / span 12;
+  }
+}
+
+.topRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1.5px solid rgba(247, 242, 222, 0.15);
+}
+
+.brandLockup {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.brandTitle {
+  font-family: var(--font-display), Georgia, serif;
+  font-size: clamp(1.4rem, 2.5vw, 2.1rem);
+  font-weight: 900;
+  color: var(--yellow);
+  letter-spacing: 0.02em;
+  margin: 0;
+  text-shadow: 2px 3px 0 var(--green-deep);
+  line-height: 1.1;
+  display: inline-block;
+  opacity: 1;
+  visibility: visible;
+}
+
+.scriptAccent {
+  font-family: var(--font-script), cursive;
+  font-size: 1.5rem;
+  color: var(--pink);
+  transform: rotate(-4deg);
+  display: inline-block;
+}
+
+.terminalChip {
+  font-family: var(--font-tag);
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: var(--ink);
+  color: var(--pink);
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  border: 1px solid rgba(247, 242, 222, 0.35);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.eyebrow {
+  font-family: var(--font-tag);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--cream);
+  opacity: 0.85;
+  margin: 0;
+}
+
+.counterSlot {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  justify-self: start;
+}
+
+.figHidden {
+  display: none;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.controlLabel {
+  font-family: var(--font-tag);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  color: var(--cream);
+  opacity: 0.7;
+}
+
+.btn,
+.btnActive {
+  font-family: var(--font-tag);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0.5rem 1.1rem !important;
+  border-radius: 999px !important;
+  cursor: pointer;
+  min-height: 38px !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition:
+    transform 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease;
+}
+
+.btn {
+  background: var(--ink) !important;
+  color: var(--cream) !important;
+  border: 1.5px solid var(--yellow) !important;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+}
+
+.btn:hover {
+  border-color: var(--pink) !important;
+  transform: translateY(-1px);
+}
+
+.btnActive {
+  background: var(--yellow) !important;
+  color: var(--ink) !important;
+  border: 2px solid var(--cream) !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+.fig {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: rgba(10, 42, 29, 0.55);
+  padding: 1.25rem;
+  border-radius: 20px;
+  border: 2px solid rgba(247, 242, 222, 0.22);
+  box-shadow: 4px 8px 0 rgba(0, 0, 0, 0.4);
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.figHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cap {
+  font-family: var(--font-tag);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--yellow);
+  background: var(--ink);
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(247, 242, 222, 0.3);
+}
+
+.liveBadge {
+  font-family: var(--font-tag);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--cream);
+  opacity: 0.75;
+}
+
+.pfpActions {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 0.75rem;
+}
+
+.pfpActions > span {
+  flex: 1 1 180px;
+}
+
+.canvasFit,
+.canvasFull {
+  border-radius: 12px;
+  border: 2px solid var(--cream);
+  box-shadow:
+    0 0 0 1px rgba(10, 42, 29, 0.5),
+    4px 7px 0 rgba(10, 42, 29, 0.5);
+  background: var(--green-deep);
+}
+
+.canvasFit {
+  width: min(92vw, 560px);
+  height: auto;
+}
+
+.canvasFull {
+  width: 1080px;
+  max-width: none;
+}

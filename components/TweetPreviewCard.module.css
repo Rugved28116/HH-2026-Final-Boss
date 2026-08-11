@@ -1,0 +1,158 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 560px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerTitle {
+  font-family: var(--font-tag);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--yellow);
+}
+
+.liveTag {
+  font-family: var(--font-tag);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  background: var(--yellow);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+.tweetCard {
+  background: #000000;
+  border: 1px solid #2f3336;
+  border-radius: 16px;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.authorRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--pink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.authorMeta {
+  display: flex;
+  flex-direction: column;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.name {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #e7e9ea;
+}
+
+.badge {
+  color: #1d9bf0;
+  font-size: 0.8rem;
+}
+
+.handle,
+.time,
+.dot,
+.subMeta {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: #71767b;
+}
+
+.subMeta {
+  font-size: 0.75rem;
+  margin-top: 0.1rem;
+}
+
+.tweetText {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  color: #e7e9ea;
+  margin: 0;
+}
+
+.hashtag,
+.mention {
+  color: #1d9bf0;
+  text-decoration: none;
+}
+
+.mediaCard {
+  background: #16181c;
+  border: 1px solid #2f3336;
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mediaTitle {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #e7e9ea;
+}
+
+.mediaDomain {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: #71767b;
+}
+
+.mediaDesc {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: #71767b;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.tweetActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.4rem;
+  border-top: 1px solid #2f3336;
+}
+
+.actionItem {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: #71767b;
+}

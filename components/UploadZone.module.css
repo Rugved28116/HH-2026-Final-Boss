@@ -1,0 +1,88 @@
+.wrap {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 560px;
+}
+
+.zone {
+  /* Contains the visually-hidden file input below; without this it positions
+     against the viewport and can sit over unrelated controls. */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 2.25rem 1.5rem;
+  border-radius: 18px;
+  cursor: pointer;
+  text-align: center;
+
+  background: rgba(10, 42, 29, 0.45);
+  /* Dashed bunting border, the signature framing device (design.md §4). */
+  border: 3px dashed var(--pink);
+
+  /* Only the paint properties transition, and fast — the dragenter response
+     has to read as instant. Transform/layout are untouched so there's no
+     reflow while a drag is in flight. */
+  transition: background-color 100ms ease-out, border-color 100ms ease-out;
+}
+
+.zone:focus-visible {
+  outline: 3px solid var(--yellow);
+  outline-offset: 3px;
+}
+
+.zoneDragging {
+  background: rgba(245, 215, 50, 0.16);
+  border-color: var(--yellow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zone {
+    transition: none;
+  }
+}
+
+.input {
+  /* Visually hidden but still focusable and clickable via the label. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.title {
+  font-family: var(--font-tag);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--yellow);
+}
+
+.hint {
+  font-family: var(--font-tag);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: var(--cream);
+  opacity: 0.7;
+  overflow-wrap: anywhere;
+}
+
+.error {
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  background: var(--pink);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1.35;
+}

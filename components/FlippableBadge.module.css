@@ -1,0 +1,280 @@
+.badgeStage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  padding-top: 55px; /* Clean space for lanyard strap & clip */
+  perspective: 1400px;
+  margin: 0 auto;
+}
+
+/* Woven Lanyard Strap ---------------------------------------------------- */
+
+.lanyardStrap {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 95px;
+  pointer-events: none;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+}
+
+.strapLeft,
+.strapRight {
+  position: absolute;
+  top: 0;
+  width: 34px;
+  height: 95px;
+  background: repeating-linear-gradient(
+    135deg,
+    var(--ink),
+    var(--ink) 12px,
+    var(--pink) 12px,
+    var(--pink) 24px,
+    var(--yellow) 24px,
+    var(--yellow) 36px
+  );
+  border: 2px solid var(--cream);
+  box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.strapLeft {
+  left: 85px;
+  transform: rotate(20deg);
+  transform-origin: bottom right;
+  border-radius: 6px 0 0 6px;
+}
+
+.strapRight {
+  right: 85px;
+  transform: rotate(-20deg);
+  transform-origin: bottom left;
+  border-radius: 0 6px 6px 0;
+}
+
+.strapText {
+  font-family: var(--font-tag);
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--cream);
+  background: rgba(10, 42, 29, 0.85);
+  padding: 0.2rem 0.5rem;
+  white-space: nowrap;
+  transform: rotate(-90deg);
+  letter-spacing: 0.12em;
+  border-radius: 4px;
+  border: 1px solid rgba(247, 242, 222, 0.4);
+}
+
+/* Metallic Clip & Ring --------------------------------------------------- */
+
+.clipGroup {
+  position: absolute;
+  top: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lanyardRing {
+  width: 22px;
+  height: 22px;
+  border: 3px solid #f5d732;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+  background: var(--ink);
+}
+
+.metallicClip {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #ffffff 0%, #d4d4d4 40%, #888888 100%);
+  border: 2px solid var(--ink);
+  border-radius: 5px;
+  margin-top: -5px;
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.55),
+    inset 0 1.5px 0 rgba(255, 255, 255, 0.9);
+  position: relative;
+}
+
+.clipSpring {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  right: 4px;
+  height: 7px;
+  background: var(--pink);
+  border-radius: 3px;
+  border: 1px solid var(--ink);
+}
+
+.clipJaw {
+  position: absolute;
+  bottom: 0;
+  left: 3px;
+  right: 3px;
+  height: 9px;
+  background: var(--ink);
+  border-radius: 0 0 3px 3px;
+}
+
+/* Slot Punch Hole -------------------------------------------------------- */
+
+.slotPunch {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38px;
+  height: 10px;
+  background: var(--green-deep);
+  border: 2px solid var(--cream);
+  border-radius: 999px;
+  z-index: 25;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.85);
+}
+
+/* Card Sway Container (3D Flip & Tilt Physics) -------------------------- */
+
+.cardSway {
+  --sway-angle: 0deg;
+  --tilt-y: 0deg;
+
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  transform-origin: top center;
+  transform: rotate(var(--sway-angle)) rotateY(var(--tilt-y));
+  transition: transform 60ms linear;
+  will-change: transform;
+}
+
+.cardHovered {
+  filter: drop-shadow(0 16px 32px rgba(0, 0, 0, 0.55));
+}
+
+/* 3D Flip Inner Container ------------------------------------------------ */
+
+.flipCardInner {
+  position: relative;
+  width: fit-content;
+  max-width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.cardFront,
+.cardBack {
+  width: fit-content;
+  max-width: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: opacity 300ms ease, visibility 300ms ease;
+}
+
+.cardFront {
+  position: relative;
+  z-index: 2;
+}
+
+.cardBack {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotateY(180deg);
+}
+
+.activeFace {
+  pointer-events: auto;
+  opacity: 1;
+  visibility: visible;
+}
+
+.inactiveFace {
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Flip Banner CTA -------------------------------------------------------- */
+
+.flipBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.55rem 0.9rem;
+  background: var(--ink);
+  border: 1.5px solid var(--yellow);
+  border-radius: 12px 12px 0 0;
+  margin-bottom: -4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  position: relative;
+  z-index: 10;
+}
+
+.sideLabel {
+  font-family: var(--font-tag);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--yellow);
+}
+
+.flipBtn {
+  font-family: var(--font-tag);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  background: var(--pink);
+  color: var(--cream);
+  border: 1.5px solid var(--cream);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.35);
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 120ms ease, background-color 120ms ease;
+}
+
+.flipBtn:hover {
+  background: var(--yellow);
+  color: var(--ink);
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardSway {
+    transform: none !important;
+    transition: none !important;
+  }
+  .flipCardInner {
+    transition: transform 1ms linear;
+  }
+}

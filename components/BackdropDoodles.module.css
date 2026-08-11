@@ -1,0 +1,176 @@
+.backdrop {
+  --par-x: 0px;
+  --par-y: 0px;
+
+  position: fixed;
+  inset: 0;
+  z-index: -1 !important;
+  pointer-events: none !important;
+  overflow: hidden;
+  background: radial-gradient(
+    circle at 50% 30%,
+    #0f4c36 0%,
+    #0b3d2b 50%,
+    #062319 100%
+  );
+}
+
+.backdrop * {
+  pointer-events: none !important;
+}
+
+/* Shifting Ambient Mesh Light Orbs --------------------------------------- */
+
+.ambientOrb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.25;
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.orbGold {
+  top: -10%;
+  right: 10%;
+  width: min(55vw, 550px);
+  height: min(55vw, 550px);
+  background: var(--yellow);
+  animation: orbFloat1 18s ease-in-out infinite alternate;
+}
+
+.orbPink {
+  bottom: 5%;
+  right: 5%;
+  width: min(45vw, 480px);
+  height: min(45vw, 480px);
+  background: var(--pink);
+  animation: orbFloat2 22s ease-in-out infinite alternate;
+}
+
+.orbGreen {
+  top: 40%;
+  right: 25%;
+  width: min(50vw, 520px);
+  height: min(50vw, 520px);
+  background: var(--green-light);
+  animation: orbFloat3 26s ease-in-out infinite alternate;
+}
+
+@keyframes orbFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 30px) scale(1.1); }
+  100% { transform: translate(-30px, 50px) scale(0.95); }
+}
+
+@keyframes orbFloat2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, -40px) scale(1.05); }
+  100% { transform: translate(30px, -20px) scale(0.9); }
+}
+
+@keyframes orbFloat3 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -40px) scale(1.15); }
+  100% { transform: translate(-20px, 20px) scale(1); }
+}
+
+/* Vintage Vignette Overlay ----------------------------------------------- */
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(6, 35, 25, 0.65) 100%
+  );
+}
+
+/* CS Blueprint Grid ------------------------------------------------------ */
+
+.codeGridPattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image:
+    linear-gradient(rgba(247, 242, 222, 0.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(247, 242, 222, 0.4) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Right-Margin SVGs ------------------------------------------------------ */
+
+.backdrop svg {
+  position: absolute;
+  stroke: var(--cream);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.14;
+  transform: translate3d(
+    calc(var(--par-x) * var(--depth)),
+    calc(var(--par-y) * var(--depth)),
+    0
+  );
+}
+
+.circuitChip {
+  top: 4%;
+  right: 4%;
+  width: clamp(100px, 10vw, 150px);
+  stroke: var(--pink);
+}
+
+.frond {
+  top: -10px;
+  right: 12%;
+  width: clamp(160px, 16vw, 240px);
+  stroke: var(--yellow);
+}
+
+.decal {
+  opacity: 0.16;
+}
+
+.decalPlate {
+  fill: var(--cream);
+  fill-opacity: 0.12;
+  stroke: var(--cream);
+  stroke-width: 1.5;
+}
+
+.decalMark {
+  fill: none;
+  stroke: var(--cream);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.decalStar {
+  top: 45%;
+  right: 4%;
+  width: clamp(45px, 4vw, 65px);
+  transform: translate3d(calc(var(--par-x) * var(--depth)), calc(var(--par-y) * var(--depth)), 0)
+    rotate(-7deg);
+}
+
+@media (max-width: 900px) {
+  .circuitChip,
+  .frond,
+  .decalStar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbGold,
+  .orbPink,
+  .orbGreen {
+    animation: none;
+  }
+  .backdrop svg {
+    transform: none !important;
+  }
+}

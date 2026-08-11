@@ -1,0 +1,200 @@
+.wrap {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 560px;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.row .field {
+  flex: 1 1 200px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.label {
+  font-family: var(--font-tag);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--yellow);
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.rareBadge {
+  font-family: var(--font-tag);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--yellow);
+  background: var(--pink);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--cream);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  animation: floatDoodle 3s ease-in-out infinite;
+}
+
+.input {
+  background: var(--cream) !important;
+  color: var(--ink) !important;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--yellow) !important;
+  border-radius: 12px;
+  width: 100%;
+  outline: none;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  opacity: 1 !important;
+  visibility: visible !important;
+  min-height: 48px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.input::placeholder {
+  color: rgba(10, 42, 29, 0.6) !important;
+  font-weight: 500;
+}
+
+.input:focus {
+  border-color: var(--pink) !important;
+  box-shadow:
+    0 0 0 3px rgba(236, 27, 120, 0.3),
+    3px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+.titleRow {
+  display: flex;
+  gap: 0.6rem;
+  align-items: stretch;
+}
+
+.title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ink) !important;
+  color: var(--pink) !important;
+  font-family: var(--font-tag);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  border: 2px solid var(--yellow) !important;
+  min-height: 2.9rem;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  position: relative;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.promptPrefix {
+  color: var(--yellow);
+  font-weight: 700;
+}
+
+.titleText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.titleRare {
+  border-color: var(--pink) !important;
+  color: var(--yellow) !important;
+  box-shadow:
+    0 0 12px rgba(236, 27, 120, 0.4),
+    3px 4px 0 rgba(0, 0, 0, 0.5);
+  background: linear-gradient(
+    90deg,
+    var(--ink) 0%,
+    rgba(236, 27, 120, 0.25) 50%,
+    var(--ink) 100%
+  ) !important;
+  background-size: 200% 100% !important;
+  animation: rareFoilSweep 4s linear infinite;
+}
+
+.titleEmpty {
+  color: var(--cream);
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+.shuffle {
+  background: var(--yellow) !important;
+  color: var(--ink) !important;
+  border: 2px solid var(--cream) !important;
+  border-radius: 12px;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  padding: 0 1.1rem;
+  font-size: 1.15rem;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition:
+    transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 140ms ease-out;
+}
+
+.shuffle:hover:not(:disabled) {
+  transform: translateY(-2px) rotate(-12deg);
+  box-shadow: 4px 7px 0 rgba(0, 0, 0, 0.5);
+}
+
+.shuffle:active:not(:disabled) {
+  transform: translate(2px, 3px) rotate(-4deg);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.shuffle:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.gateHint {
+  margin: 0;
+  font-family: var(--font-tag);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--yellow);
+  opacity: 0.9;
+  background: rgba(10, 42, 29, 0.7);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid rgba(247, 242, 222, 0.25);
+}

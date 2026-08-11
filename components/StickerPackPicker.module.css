@@ -1,0 +1,76 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-family: var(--font-tag);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--cream);
+  opacity: 0.8;
+}
+
+.hint {
+  font-family: var(--font-tag);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--yellow);
+  opacity: 0.85;
+}
+
+.pills {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.pill {
+  font-family: var(--font-tag);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.45rem 0.8rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cream);
+  border: 1.5px solid rgba(247, 242, 222, 0.3);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition:
+    transform 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease;
+}
+
+.pill:hover {
+  transform: translateY(-2px);
+  border-color: var(--yellow);
+}
+
+.pillActive {
+  background: var(--pink);
+  color: var(--cream);
+  border-color: var(--cream);
+  box-shadow: 3px 3px 0 rgba(10, 42, 29, 0.45);
+}
+
+.icon {
+  font-size: 0.85rem;
+}
+
+.label {
+  white-space: nowrap;
+}

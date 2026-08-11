@@ -1,0 +1,61 @@
+/* Canvas ribbon is 74px tall with a 46px arrow — keep that ~0.62 ratio so the
+   two read as the same shape at different scales. */
+.ribbon {
+  --ribbon-h: 42px;
+  --ribbon-arrow: 26px;
+  --ribbon-notch: 14px;
+
+  display: inline-flex;
+  align-items: center;
+  height: var(--ribbon-h);
+  padding: 0 calc(var(--ribbon-arrow) + 0.6rem) 0 calc(var(--ribbon-notch) + 0.7rem);
+  background: var(--pink);
+  /* Arrow right, V-notch left — the same silhouette the canvas ribbon uses. */
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ribbon-arrow)) 0,
+    100% 50%,
+    calc(100% - var(--ribbon-arrow)) 100%,
+    0 100%,
+    var(--ribbon-notch) 50%
+  );
+  /* Sits slightly off-square, like the seal and the QR sticker. Rotation is a
+     transform, so it costs no layout and can't shift the row it sits in. */
+  transform: rotate(-3deg);
+  /* A border can't follow a clip-path — it gets cut away with everything else.
+     Four hairline drop-shadows in cream do follow it, stacking into a die-cut
+     outline; the fifth is the flat offset shadow. */
+  filter:
+    drop-shadow(1.5px 0 0 var(--cream))
+    drop-shadow(-1.5px 0 0 var(--cream))
+    drop-shadow(0 1.5px 0 var(--cream))
+    drop-shadow(0 -1.5px 0 var(--cream))
+    drop-shadow(4px 5px 0 rgba(10, 42, 29, 0.35));
+  transition: transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Straightens by 2° under the cursor, as if nudged. Deliberately only a
+   tilt and no lift or colour change: this is a readout, not a control, and
+   anything stronger would imply it can be clicked. */
+.ribbon:hover {
+  transform: rotate(-1deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ribbon {
+    transition: none;
+  }
+
+  .ribbon:hover {
+    transform: rotate(-3deg);
+  }
+}
+
+.text {
+  font-family: var(--font-tag);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  white-space: nowrap;
+}

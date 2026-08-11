@@ -1,0 +1,65 @@
+.stage {
+  position: relative;
+  display: inline-block;
+  /* The overlay overflows the canvas box; nothing here should clip it or
+     start scrolling the page because of it. */
+  overflow: visible;
+}
+
+.overlay {
+  position: absolute;
+  top: -72px;
+  left: -72px;
+  width: calc(100% + 144px);
+  height: calc(100% + 144px);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Scale + fade + tape peel, ease-out-back: overshoots ~1.5% then settles,
+   which reads as "considered" rather than a snap (design.md §10). Transform
+   and opacity only, so this composites without touching layout.
+
+   The peel is a rotateX hinged on the top edge — the sheet swings down into
+   place while its top stays pinned, which is the motion of a sticker being
+   laid rather than one fading up. Chosen over staggering the individual
+   shapes because that would need the canvas redrawn every frame of the
+   stagger, undoing the cached static layer that keeps typing responsive. */
+.reveal {
+  transform-origin: top center;
+  animation: revealPeel 380ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* perspective() appears in every keyframe: interpolating between a full
+   transform and `none` makes browsers fall back to matrix interpolation and
+   the hinge collapses. */
+@keyframes revealPeel {
+  from {
+    opacity: 0;
+    transform: perspective(900px) rotateX(-8deg) scale(0.96);
+  }
+  55% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    transform: perspective(900px) rotateX(0deg) scale(1);
+  }
+}
+
+@keyframes revealFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Static equivalent: a plain fade, no scale and no particles (the JS skips the
+   burst under the same query). */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    animation: revealFade 160ms linear both;
+  }
+}

@@ -1,0 +1,92 @@
+.page {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.25rem;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 420px;
+}
+
+.tag {
+  font-family: var(--font-tag);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--yellow);
+}
+
+/* Same die-cut language as the canvas stickers: cream outline + hard offset
+   shadow (design.md §4). */
+.shot {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 3px solid var(--cream);
+  border-radius: 10px;
+  box-shadow: 5px 7px 0 rgba(0, 0, 0, 0.45);
+  background: var(--green-mid);
+}
+
+.missing {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--cream);
+  border: 2px dashed var(--green-light);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.cta {
+  font-family: var(--font-tag);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 0.85rem 1.6rem;
+  border-radius: 999px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 2px solid var(--cream);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  transition:
+    transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 140ms ease-out;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.5);
+  background: #ffe347;
+}
+
+.cta:active {
+  transform: translate(1px, 2px);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* design.md §10 — keep the shadow change so hover stays discoverable without
+   movement. */
+@media (prefers-reduced-motion: reduce) {
+  .cta {
+    transition: box-shadow 140ms ease-out;
+  }
+
+  .cta:hover,
+  .cta:active {
+    transform: none;
+  }
+}
