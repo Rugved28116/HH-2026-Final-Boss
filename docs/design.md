@@ -189,16 +189,18 @@ rather than a freshly-printed badge:
   `> class: "…"` and the yellow `pass HH26-XXXXXX`. Both carry a few
   degrees of tilt; they are small enough that rotation can't throw a corner
   off-canvas, unlike the header and footer bars, which stay level (§9b).
-- Member row: 1–4 circles evenly spaced and centered, each with the same
+- Member row: 1–3 circles evenly spaced and centered, each with the same
   yellow-ring + pink/white bunting treatment as Formats A and B. Beneath
   each: the member's name in mono small caps, then a yellow `BUILDER 0N`
   tag — the device that makes the row read as a roster, not a row of
   avatars.
-  - **Radius is derived from the active member count, not fixed.** Four
-    across 1060px of usable width is the binding constraint; a radius that
-    fits four would leave one or two looking lost, so height caps it the
-    rest of the time. Ring weight and bunting gap scale with the circle so
-    the treatment reads identically at any size.
+  - **Radius takes the smaller of two caps** — the width `count` circles
+    need across 1060px, and the height the labels need to clear the footer.
+    At a three-member maximum the height cap (123px) always wins, so the
+    circles are in practice a constant size; the width term is what keeps
+    the layout safe to raise the member cap against later. Ring weight and
+    bunting gap scale with the circle so the treatment reads identically at
+    any size.
   - The row is laid out downward from a **fixed top edge** rather than
     around a fixed centre — pinning the centre would walk the top edge up
     into the chip row as the radius grows.

@@ -441,7 +441,7 @@ export default function PreviewPage() {
   const teamMembers = members.map((member, i) =>
     i === 0 ? { ...member, photo: photo?.image ?? null, fileName } : member
   );
-  // Members 2–4 are optional (app-flow.md §4b), so only the team name and the
+  // Members 2–3 are optional (app-flow.md §3b), so only the team name and the
   // uploader's own photo gate the actions.
   const teamReady = Boolean(teamName.trim() && photo);
 

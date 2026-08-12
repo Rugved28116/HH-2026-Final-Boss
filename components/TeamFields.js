@@ -14,9 +14,9 @@ export const MEMBER_NAME_MAX = 18;
  * Format C's control rail (app-flow.md §4b).
  *
  * Member slots are disclosed progressively: slot 1 is always present and uses
- * the page's existing upload flow, slots 2–4 appear one at a time behind
- * "+ Member N". Showing four dropzones up front would read as four required
- * fields when three of them are optional.
+ * the page's existing upload flow, slots 2–3 appear one at a time behind
+ * "+ Member N". Showing all three dropzones up front would read as three
+ * required fields when two of them are optional.
  */
 export default function TeamFields({
   teamName,

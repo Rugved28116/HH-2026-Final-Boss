@@ -27,7 +27,7 @@ AppState {
   }
   team: {                          // Format C only
     teamName: string               // required, max ~32 chars
-    members: Array<{               // 1–4 entries; index 0 is the uploader
+    members: Array<{               // 1–3 entries; index 0 is the uploader
       name: string                 //   max ~18 chars
       photo: HTMLImageElement|null //   null renders the reserved-slot placeholder
     }>
@@ -47,7 +47,7 @@ AppState {
 
 Only `members[0].name` is stored per-slot for the uploader; its photo is
 `AppState.photo`, so there is never a second copy of "your photo" to keep
-in sync. Members 2–4 own both their name and their photo.
+in sync. Members 2–3 own both their name and their photo.
 
 Nothing here leaves the browser unless the user hits Share or Download
 (download only triggers the counter increment, §7 — never the photo).

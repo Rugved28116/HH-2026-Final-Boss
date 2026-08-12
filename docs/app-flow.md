@@ -80,15 +80,15 @@ bare gray box.
 ## 3b. Field entry (Format C only)
 
 - **Team name** — required, short text input, max ~32 chars.
-- **Squad** — 1–4 member slots, disclosed progressively:
+- **Squad** — 1–3 member slots, disclosed progressively:
   - **Slot 1 is always present** and is the uploader themself. Its photo is
     the page-level upload from §2 — the same drag-and-drop, HEIC conversion
     and EXIF normalisation as the other formats, not a second upload path.
     Only its *name* is a slot-owned field.
-  - **Slots 2–4 are optional and hidden until asked for.** A `+ Member N`
+  - **Slots 2–3 are optional and hidden until asked for.** A `+ Member N`
     button reveals one slot at a time, each with its own name input and its
-    own dropzone. Showing four dropzones up front would read as four
-    required fields when three of them are optional.
+    own dropzone. Showing all three dropzones up front would read as
+    three required fields when two of them are optional.
   - Revealed slots can be removed again (slot 1 excepted), which collapses
     the canvas row back down.
   - **A revealed slot with no photo yet is not an error state.** It renders
@@ -102,7 +102,7 @@ bare gray box.
   shuffle control and the same flicker pattern (`schema.md` §8b).
 
 **Gating:** Download and Share need **team name + slot 1's photo**.
-Members 2–4 never gate the actions — a solo entry is a valid squad frame.
+Members 2–3 never gate the actions — a solo entry is a valid squad frame.
 
 **State:** live re-render on every keystroke/shuffle/slot change.
 
