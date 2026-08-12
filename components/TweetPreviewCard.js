@@ -46,7 +46,7 @@ export default function TweetPreviewCard({ name, role, getCanvas, onShare }) {
         <div className={styles.mediaCard}>
           <div className={styles.mediaHeader}>
             <span className={styles.mediaTitle}>HH Goa 2026 — Builder Card</span>
-            <span className={styles.mediaDomain}>hhgoa2026.vercel.app</span>
+            <span className={styles.mediaDomain}>hhgoa.com</span>
           </div>
           <p className={styles.mediaDesc}>
             Check out my official HH Goa 2026 Builder Card! Generated instantly without accounts or waiting.
