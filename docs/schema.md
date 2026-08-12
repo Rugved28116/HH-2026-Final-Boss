@@ -12,9 +12,9 @@ data, but documented here since it drives a user-facing mechanic).
 
 ```
 AppState {
-  format: "pfp" | "card"
-  photo: {
-    image: HTMLImageElement
+  format: "pfp" | "card" | "team"
+  photo: {                         // "your photo" — shared by all three formats,
+    image: HTMLImageElement        // and Format C's member-1 slot reads from it
     sourceType: "jpg" | "png" | "webp" | "heic"
   } | null
   fields: {                        // Format B only
@@ -25,13 +25,29 @@ AppState {
       tier: "common" | "rare"      // drives the foil/sparkle treatment
     }
   }
+  team: {                          // Format C only
+    teamName: string               // required, max ~32 chars
+    members: Array<{               // 1–4 entries; index 0 is the uploader
+      name: string                 //   max ~18 chars
+      photo: HTMLImageElement|null //   null renders the reserved-slot placeholder
+    }>
+    builderClass: {                // same shape and pools as builderTitle (§8),
+      text: string                 //   keyed off teamName instead of role
+      tier: "common" | "rare"
+    }
+    uniquePassId: string           // "HH26-XXXXXX" — see §9
+  }
   render: {
-    canvasWidth: number             // 1080 (both formats)
-    canvasHeight: number            // 1080 (pfp) | 1512 (card)
+    canvasWidth: number             // 1080 (pfp, card) | 1200 (team)
+    canvasHeight: number            // 1080 (pfp) | 1512 (card) | 630 (team)
   }
   hasRevealed: boolean              // gates the D1 reveal animation to once per photo
 }
 ```
+
+Only `members[0].name` is stored per-slot for the uploader; its photo is
+`AppState.photo`, so there is never a second copy of "your photo" to keep
+in sync. Members 2–4 own both their name and their photo.
 
 Nothing here leaves the browser unless the user hits Share or Download
 (download only triggers the counter increment, §7 — never the photo).
@@ -181,6 +197,32 @@ of a cosmetic detail.
 
 ---
 
+## 8b. Unique pass ID (Format C)
+
+Numbered `8b` rather than inserted as a new §9 so the existing §9/§10
+references elsewhere in the docs keep pointing at the same sections.
+
+```
+uniquePassId = "HH26-" + 6 symbols from
+               "ABCDEFGHJKMNPQRSTVWXYZ23456789"
+```
+
+- **Alphabet:** 30 symbols, dropping `0/O`, `1/I/L` and `U`. The ID is read
+  off a rendered graphic and typed back in, and those are the pairs people
+  transcribe wrong.
+- **Source:** `crypto.getRandomValues`, rejection-sampled so every symbol is
+  equally likely — `% alphabet.length` on a raw byte biases toward the first
+  16 symbols, invisible in one ID but visible across a room full of cards.
+- **Generated on mount, not during render.** A value produced server-side
+  would not match the one the client generates on hydration.
+- **Not unique by construction.** 30⁶ ≈ 7.3×10⁸ and nothing is stored
+  server-side, so this is a collision-unlikely label, not a key. Nothing
+  depends on it being globally distinct — see §10.
+- **Rerollable** via its own shuffle control, with the same flicker pattern
+  as the builder title.
+
+---
+
 ## 9. Config / environment
 
 | Var | Required for | Notes |
@@ -198,6 +240,9 @@ No database URL, no auth provider, no third-party API keys beyond these two.
 - No `generations` table — downloads aren't individually recorded, only
   counted in aggregate (§7).
 - No per-card QR uniqueness — one fixed target URL, no tracking of scans.
+- No `teams` table, and no server-side registry of pass IDs (§8b). The ID is
+  a decorative label rendered into the graphic, not a lookup key — nothing
+  ever resolves one back to a team.
 - No analytics schema beyond the single counter — if richer usage
   tracking is wanted later, it should be added as a genuinely separate
   concern, not bolted onto `/api/share` or `/api/counter`.

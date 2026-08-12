@@ -25,9 +25,9 @@ bare gray box.
 
 ## 1. Format selection
 
-- Toggle between **PFP Frame** and **Builder ID Card**, spring-eased
-  transition on the active pill (matches `design.md` motion addendum),
-  not an instant color swap.
+- Toggle between **PFP Frame**, **Builder ID Card** and **Team Squad**,
+  spring-eased transition on the active pill (matches `design.md` motion
+  addendum), not an instant color swap.
 - Switching format after a photo is already uploaded: re-renders
   immediately using the same photo.
 - Switching format clears format-specific fields from view but doesn't
@@ -74,6 +74,37 @@ bare gray box.
     restrained enough not to look like a bug.
 
 **State:** live re-render on every keystroke/shuffle — no "apply" button.
+
+---
+
+## 3b. Field entry (Format C only)
+
+- **Team name** — required, short text input, max ~32 chars.
+- **Squad** — 1–4 member slots, disclosed progressively:
+  - **Slot 1 is always present** and is the uploader themself. Its photo is
+    the page-level upload from §2 — the same drag-and-drop, HEIC conversion
+    and EXIF normalisation as the other formats, not a second upload path.
+    Only its *name* is a slot-owned field.
+  - **Slots 2–4 are optional and hidden until asked for.** A `+ Member N`
+    button reveals one slot at a time, each with its own name input and its
+    own dropzone. Showing four dropzones up front would read as four
+    required fields when three of them are optional.
+  - Revealed slots can be removed again (slot 1 excepted), which collapses
+    the canvas row back down.
+  - **A revealed slot with no photo yet is not an error state.** It renders
+    a dashed placeholder circle reading `NO PHOTO UPLOADED`, so the row
+    holds its shape while the team is assembled.
+- **Builder class** — auto-generated the moment Team name has content,
+  keyed off the team name the way Format B keys off the role. Read-only,
+  with a shuffle control (🎲); identical flicker-then-land animation and
+  identical rare-tier treatment (`schema.md` §8).
+- **Unique pass ID** — auto-generated on load, read-only, with its own
+  shuffle control and the same flicker pattern (`schema.md` §8b).
+
+**Gating:** Download and Share need **team name + slot 1's photo**.
+Members 2–4 never gate the actions — a solo entry is a valid squad frame.
+
+**State:** live re-render on every keystroke/shuffle/slot change.
 
 ---
 

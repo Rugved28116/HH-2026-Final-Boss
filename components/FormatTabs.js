@@ -5,6 +5,7 @@ import styles from './FormatTabs.module.css';
 export const FORMATS = [
   { id: 'pfp', label: 'PFP FRAME', icon: '🖼️', tag: '1080×1080' },
   { id: 'card', label: 'BUILDER ID', icon: '🪪', tag: '1080×1512' },
+  { id: 'team', label: 'TEAM SQUAD', icon: '👥', tag: '1200×630' },
 ];
 
 /**
@@ -17,7 +18,14 @@ export default function FormatTabs({ value, onChange }) {
 
   return (
     <div className={styles.wrap}>
-      <div className={styles.tabs} role="tablist" aria-label="Output format">
+      <div
+        className={styles.tabs}
+        role="tablist"
+        aria-label="Output format"
+        // Drives the indicator's width in CSS, so adding a format here can't
+        // leave the sliding pill sized for the old tab count.
+        style={{ '--tab-count': FORMATS.length }}
+      >
         <span
           className={styles.indicator}
           style={{ transform: `translateX(${index * 100}%)` }}

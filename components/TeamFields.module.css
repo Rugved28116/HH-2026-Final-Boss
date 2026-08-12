@@ -1,0 +1,335 @@
+/* Format C control rail. Shares the cream-outline + hard-offset-shadow
+   language with CardFields so the two formats read as one system. */
+
+.wrap {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 560px;
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.label {
+  font-family: var(--font-tag);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--yellow);
+}
+
+.rareBadge {
+  font-family: var(--font-tag);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--yellow);
+  background: var(--pink);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--cream);
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3);
+  animation: floatDoodle 3s ease-in-out infinite;
+}
+
+.input {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-body);
+  /* 16px exactly — anything smaller triggers iOS focus zoom. */
+  font-size: 16px;
+  font-weight: 700;
+  padding: 0.8rem 1rem;
+  border: 2px solid var(--yellow);
+  border-radius: 12px;
+  width: 100%;
+  outline: none;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  min-height: 48px;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+  -webkit-appearance: none;
+}
+
+.input::placeholder {
+  color: rgba(10, 42, 29, 0.6);
+  font-weight: 500;
+}
+
+.input:focus {
+  border-color: var(--pink);
+  box-shadow:
+    0 0 0 3px rgba(236, 27, 120, 0.3),
+    3px 5px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Member slots ------------------------------------------------------------ */
+
+.slots {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.75rem;
+  border-radius: 14px;
+  background: rgba(10, 42, 29, 0.55);
+  border: 2px dashed rgba(247, 242, 222, 0.28);
+  animation: slotIn 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.slotHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.slotTag {
+  font-family: var(--font-tag);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: var(--yellow);
+}
+
+.slotYou {
+  font-family: var(--font-tag);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  background: var(--yellow);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+}
+
+.remove {
+  background: transparent;
+  border: 1px solid rgba(247, 242, 222, 0.35);
+  color: var(--cream);
+  border-radius: 999px;
+  /* 44px tap target (design.md §11) even though the glyph is small. */
+  min-width: 44px;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  line-height: 1;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+
+.remove:hover {
+  background: var(--pink);
+  border-color: var(--cream);
+}
+
+.slotHint {
+  margin: 0;
+  font-family: var(--font-tag);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+  color: var(--cream);
+  opacity: 0.75;
+}
+
+.addMember {
+  align-self: flex-start;
+  font-family: var(--font-tag);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 2px solid var(--cream);
+  border-radius: 999px;
+  padding: 0.7rem 1.2rem;
+  min-height: 44px;
+  cursor: pointer;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  transition:
+    transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 140ms ease-out;
+}
+
+.addMember:hover {
+  transform: translateY(-2px);
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.5);
+}
+
+.addMember:active {
+  transform: translate(1px, 2px);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Generated fields (class + pass id) --------------------------------------- */
+
+.genRow {
+  display: flex;
+  gap: 0.6rem;
+  align-items: stretch;
+}
+
+.generated {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--ink);
+  color: var(--pink);
+  font-family: var(--font-tag);
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  border: 2px solid var(--yellow);
+  min-height: 2.9rem;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  position: relative;
+}
+
+.generatedPass {
+  color: var(--yellow);
+  letter-spacing: 0.12em;
+}
+
+.promptPrefix {
+  color: var(--yellow);
+  font-weight: 700;
+}
+
+.genText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.genEmpty {
+  color: var(--cream);
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+.generatedRare {
+  border-color: var(--pink);
+  color: var(--yellow);
+  box-shadow:
+    0 0 12px rgba(236, 27, 120, 0.4),
+    3px 4px 0 rgba(0, 0, 0, 0.5);
+  background: linear-gradient(90deg,
+      var(--ink) 0%,
+      rgba(236, 27, 120, 0.25) 50%,
+      var(--ink) 100%);
+  background-size: 200% 100%;
+  animation: rareFoilSweep 4s linear infinite;
+}
+
+.shuffle {
+  background: var(--yellow);
+  color: var(--ink);
+  border: 2px solid var(--cream);
+  border-radius: 12px;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  padding: 0 1.1rem;
+  min-width: 48px;
+  font-size: 1.15rem;
+  cursor: pointer;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 140ms ease-out;
+}
+
+.shuffle:hover:not(:disabled) {
+  transform: translateY(-2px) rotate(-12deg);
+  box-shadow: 4px 7px 0 rgba(0, 0, 0, 0.5);
+}
+
+.shuffle:active:not(:disabled) {
+  transform: translate(2px, 3px) rotate(-4deg);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.shuffle:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.gateHint {
+  margin: 0;
+  font-family: var(--font-tag);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--yellow);
+  opacity: 0.9;
+  background: rgba(10, 42, 29, 0.7);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid rgba(247, 242, 222, 0.25);
+}
+
+@keyframes slotIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* design.md §10 — every animation gets a reduced-motion fallback. The slot
+   still appears, it just doesn't slide in; hover keeps its shadow change so
+   the controls stay discoverable without movement. */
+@media (prefers-reduced-motion: reduce) {
+  .slot {
+    animation: none;
+  }
+
+  .rareBadge,
+  .generatedRare {
+    animation: none;
+  }
+
+  .addMember,
+  .shuffle {
+    transition: box-shadow 140ms ease-out;
+  }
+
+  .addMember:hover,
+  .addMember:active,
+  .shuffle:hover:not(:disabled),
+  .shuffle:active:not(:disabled) {
+    transform: none;
+  }
+}

@@ -171,6 +171,48 @@ rather than a freshly-printed badge:
 
 ---
 
+## 6b. Format C — Team Squad Frame layout
+
+- Canvas: 1200×630 (the OG-image ratio, so a shared link's card crops to
+  the artwork rather than through it).
+- Background: same green gradient, white line-art palm trees **flanking
+  both sides** rather than the bottom corners — a landscape canvas has no
+  tall corner to hang them in, and the sides are the only region the member
+  row never occupies.
+- Header band: full-bleed yellow banner across the top, "HACKER HOUSE GOA
+  2026 · TEAM SQUAD" in Fraunces 900 ink caps, cream cut line along its
+  lower edge only (the other three sides run off-canvas — outlining those
+  would draw a border around the artwork).
+- Beneath the band: the team name in mono caps (auto-shrinks to fit), then
+  "GOA, INDIA · 28–31 OCT 2026" smaller and dimmer.
+- Class + pass chips: two terminal chips centered as a pair — the pink
+  `> class: "…"` and the yellow `pass HH26-XXXXXX`. Both carry a few
+  degrees of tilt; they are small enough that rotation can't throw a corner
+  off-canvas, unlike the header and footer bars, which stay level (§9b).
+- Member row: 1–4 circles evenly spaced and centered, each with the same
+  yellow-ring + pink/white bunting treatment as Formats A and B. Beneath
+  each: the member's name in mono small caps, then a yellow `BUILDER 0N`
+  tag — the device that makes the row read as a roster, not a row of
+  avatars.
+  - **Radius is derived from the active member count, not fixed.** Four
+    across 1060px of usable width is the binding constraint; a radius that
+    fits four would leave one or two looking lost, so height caps it the
+    rest of the time. Ring weight and bunting gap scale with the circle so
+    the treatment reads identically at any size.
+  - The row is laid out downward from a **fixed top edge** rather than
+    around a fixed centre — pinning the centre would walk the top edge up
+    into the chip row as the radius grows.
+  - An empty slot renders a dashed placeholder circle with `NO PHOTO
+    UPLOADED` and **no solid yellow ring**; the ring is what distinguishes a
+    filled member from a pending one at a glance.
+- Footer: dark ticker bar — `#FrameInGoa · Oct 28–31, 2026 · GOA, INDIA ·
+  hhgoa.com` left, with the hashtag and domain in yellow and the dividers
+  in pink so it reads as a ticker rather than a caption. A small
+  `4:26 PM STUDIO` clock mark sits at the right end in VT323, the one
+  place per composition that face is used (§3).
+
+---
+
 ## 7. UI chrome (the page around the canvas, not the generated graphic)
 
 - Page background: `green-deep`, not black — the whole tool should feel

@@ -9,18 +9,22 @@ import FlippableBadge from '@/components/FlippableBadge';
 import PhotoNudgeControls from '@/components/PhotoNudgeControls';
 import RevealCanvas from '@/components/RevealCanvas';
 import ShareButton from '@/components/ShareButton';
+import TeamFields from '@/components/TeamFields';
 import UploadZone from '@/components/UploadZone';
 import { useCounter } from '@/lib/counter/useCounter';
 import { FILENAMES } from '@/lib/export/download';
 import { flickerCandidates, poolFor, rollTitle } from '@/lib/title/pools';
+import { flickerPassIds, rollPassId } from '@/lib/team/passId';
 import { resolveCanvasFonts } from '@/lib/render/canvasFonts';
 import { getQrCanvas } from '@/lib/render/qr';
 import { PFP_SIZE, drawPfpFrame } from '@/lib/render/pfp';
 import { CARD_W, CARD_H, CARD_QR_SIZE } from '@/lib/render/card';
+import { TEAM_W, TEAM_H, TEAM_MAX_MEMBERS, drawTeamFrame } from '@/lib/render/team';
 import { createCardPainter } from '@/lib/render/cardPainter';
 import styles from './preview.module.css';
 
 const EMPTY_TITLE = { text: '', tier: 'common', pool: null };
+const EMPTY_MEMBER = { name: '', photo: null, fileName: null };
 
 const FLICKER_STEPS = [0, 90, 200];
 const FLICKER_LAND = 340;
@@ -29,6 +33,7 @@ const SHEEN_MS = 620;
 export default function PreviewPage() {
   const pfpRef = useRef(null);
   const cardRef = useRef(null);
+  const teamRef = useRef(null);
   const fontsRef = useRef(null);
   const qrRef = useRef(null);
 
@@ -43,6 +48,21 @@ export default function PreviewPage() {
   const [displayTitle, setDisplayTitle] = useState('');
   const [shuffling, setShuffling] = useState(false);
   const [revealToken, setRevealToken] = useState(0);
+
+  // Format C — Team Squad. Slot 1 is always present and draws its photo from
+  // the page-level `photo` state, so there is only ever one "your photo"
+  // regardless of which format is active.
+  const [teamName, setTeamName] = useState('');
+  const [members, setMembers] = useState([EMPTY_MEMBER]);
+  const [builderClass, setBuilderClass] = useState(EMPTY_TITLE);
+  const [displayClass, setDisplayClass] = useState('');
+  const [classShuffling, setClassShuffling] = useState(false);
+  // Generated on mount rather than in the initial state: rollPassId uses
+  // crypto.getRandomValues, and a value produced during SSR would not match the
+  // one the client generates on hydration.
+  const [passId, setPassId] = useState('');
+  const [displayPassId, setDisplayPassId] = useState('');
+  const [passShuffling, setPassShuffling] = useState(false);
 
   // Feature 1: Selected Sticker Pack
   const [selectedStickers, setSelectedStickers] = useState([
@@ -68,11 +88,18 @@ export default function PreviewPage() {
     format: 'pfp',
     photoTransform: { panX: 0, panY: 0, zoom: 1 },
     selectedStickers: ['shield', 'scallop', 'octagon', 'airmail', 'stamp'],
+    teamName: '',
+    teamMembers: [EMPTY_MEMBER],
+    builderClass: EMPTY_TITLE,
+    passId: '',
   });
   const paintRaf = useRef(0);
   const sheenRaf = useRef(0);
   const timers = useRef([]);
+  const classTimers = useRef([]);
+  const passTimers = useRef([]);
   const poolRef = useRef(null);
+  const classPoolRef = useRef(null);
   const reducedMotion = useRef(false);
   const cardPainter = useRef(null);
 
@@ -103,6 +130,20 @@ export default function PreviewPage() {
           role: p.role.trim() || 'Your Role',
           builderTitle: p.title.text ? p.title : { text: 'roll a title', tier: 'common' },
         },
+      });
+    }
+
+    if (p.format === 'team' && teamRef.current) {
+      drawTeamFrame(teamRef.current.getContext('2d'), {
+        fonts,
+        teamName: p.teamName,
+        members: p.teamMembers,
+        builderClass: p.builderClass.text
+          ? p.builderClass
+          : { text: '', tier: 'common' },
+        passId: p.passId,
+        photoTransform: p.photoTransform,
+        sheen: p.sheen,
       });
     }
 
@@ -164,6 +205,19 @@ export default function PreviewPage() {
     drawParams.current.title = shuffling
       ? { text: displayTitle, tier: 'common' }
       : { ...title, text: displayTitle };
+
+    drawParams.current.teamName = teamName;
+    // Slot 1's photo is the page-level upload, not a member-owned one.
+    drawParams.current.teamMembers = members.map((member, i) =>
+      i === 0 ? { ...member, photo: photo?.image ?? null } : { ...member }
+    );
+    // Mid-flicker values must never trigger the rare treatment, same rule the
+    // card's title chip follows.
+    drawParams.current.builderClass = classShuffling
+      ? { text: displayClass, tier: 'common' }
+      : { ...builderClass, text: displayClass };
+    drawParams.current.passId = passShuffling ? displayPassId : passId;
+
     schedulePaint();
   }, [
     photo,
@@ -175,6 +229,14 @@ export default function PreviewPage() {
     format,
     photoTransform,
     selectedStickers,
+    teamName,
+    members,
+    builderClass,
+    displayClass,
+    classShuffling,
+    passId,
+    displayPassId,
+    passShuffling,
     schedulePaint,
   ]);
 
@@ -184,11 +246,19 @@ export default function PreviewPage() {
       paintRaf.current = 0;
       cancelAnimationFrame(sheenRaf.current);
       sheenRaf.current = 0;
-      timers.current.forEach(clearTimeout);
-      timers.current = [];
+      [timers, classTimers, passTimers].forEach((bucket) => {
+        bucket.current.forEach(clearTimeout);
+        bucket.current = [];
+      });
     },
     []
   );
+
+  // Pass ID exists from the first paint so the canvas never renders an empty
+  // chip; regenerating it is the user's call, not a side effect of typing.
+  useEffect(() => {
+    setPassId(rollPassId());
+  }, []);
 
   const runSheen = useCallback(() => {
     cancelAnimationFrame(sheenRaf.current);
@@ -254,6 +324,109 @@ export default function PreviewPage() {
     timers.current.push(setTimeout(() => land(next), FLICKER_LAND));
   }, [role, title.text, land]);
 
+  /* Format C — builder class, pass ID, and member slots ------------------- */
+
+  const landClass = useCallback(
+    (next) => {
+      setBuilderClass(next);
+      setDisplayClass(next.text);
+      setClassShuffling(false);
+      classPoolRef.current = next.pool;
+      if (next.tier === 'rare' && !reducedMotion.current) runSheen();
+    },
+    [runSheen]
+  );
+
+  // The team name is the keyword source here, the way the role is for Format B
+  // (schema.md §8) — "Beach Bytes AI" lands in the same pool a role of "AI"
+  // would. Rerolls only when the matched pool actually changes, so typing
+  // inside one pool doesn't reshuffle on every keystroke.
+  useEffect(() => {
+    const trimmed = teamName.trim();
+    if (!trimmed) {
+      classPoolRef.current = null;
+      setBuilderClass(EMPTY_TITLE);
+      setDisplayClass('');
+      return;
+    }
+    const pool = poolFor(trimmed);
+    if (pool !== classPoolRef.current) landClass(rollTitle(trimmed));
+  }, [teamName, landClass]);
+
+  const shuffleClass = useCallback(() => {
+    const trimmed = teamName.trim();
+    if (!trimmed) return;
+
+    classTimers.current.forEach(clearTimeout);
+    classTimers.current = [];
+
+    const next = rollTitle(trimmed, { avoid: builderClass.text });
+    if (reducedMotion.current) {
+      landClass(next);
+      return;
+    }
+
+    const candidates = flickerCandidates(trimmed, FLICKER_STEPS.length, {
+      from: builderClass.text,
+      to: next.text,
+    });
+    setClassShuffling(true);
+    FLICKER_STEPS.forEach((delay, i) => {
+      classTimers.current.push(setTimeout(() => setDisplayClass(candidates[i]), delay));
+    });
+    classTimers.current.push(setTimeout(() => landClass(next), FLICKER_LAND));
+  }, [teamName, builderClass.text, landClass]);
+
+  const shufflePass = useCallback(() => {
+    passTimers.current.forEach(clearTimeout);
+    passTimers.current = [];
+
+    const next = rollPassId({ avoid: passId });
+    if (reducedMotion.current) {
+      setPassId(next);
+      setDisplayPassId('');
+      setPassShuffling(false);
+      return;
+    }
+
+    const candidates = flickerPassIds(FLICKER_STEPS.length, { from: passId, to: next });
+    setPassShuffling(true);
+    FLICKER_STEPS.forEach((delay, i) => {
+      passTimers.current.push(setTimeout(() => setDisplayPassId(candidates[i]), delay));
+    });
+    passTimers.current.push(
+      setTimeout(() => {
+        setPassId(next);
+        setDisplayPassId('');
+        setPassShuffling(false);
+      }, FLICKER_LAND)
+    );
+  }, [passId]);
+
+  const onMemberNameChange = useCallback((index, value) => {
+    setMembers((prev) => prev.map((m, i) => (i === index ? { ...m, name: value } : m)));
+  }, []);
+
+  const onMemberPhoto = useCallback((index, next, name) => {
+    setMembers((prev) =>
+      prev.map((m, i) =>
+        i === index ? { ...m, photo: next?.image ?? null, fileName: name } : m
+      )
+    );
+    // A member photo landing is a newly-uploaded photo, so it earns the reveal
+    // on the same terms the other formats use.
+    if (next) pendingReveal.current = true;
+  }, []);
+
+  const onAddMember = useCallback(() => {
+    setMembers((prev) => (prev.length >= TEAM_MAX_MEMBERS ? prev : [...prev, EMPTY_MEMBER]));
+  }, []);
+
+  const onRemoveMember = useCallback((index) => {
+    // Slot 1 is the uploader and cannot be removed.
+    setMembers((prev) => (index === 0 ? prev : prev.filter((_, i) => i !== index)));
+  }, []);
+
   const onPhoto = useCallback((next, name) => {
     setPhoto(next);
     setFileName(name);
@@ -262,6 +435,15 @@ export default function PreviewPage() {
 
   const canvasClass = zoom === 'fit' ? styles.canvasFit : styles.canvasFull;
   const ready = Boolean(name.trim() && role.trim());
+
+  // Slot 1 mirrors the page-level upload so the form and the canvas agree on
+  // what "your photo" is.
+  const teamMembers = members.map((member, i) =>
+    i === 0 ? { ...member, photo: photo?.image ?? null, fileName } : member
+  );
+  // Members 2–4 are optional (app-flow.md §4b), so only the team name and the
+  // uploader's own photo gate the actions.
+  const teamReady = Boolean(teamName.trim() && photo);
 
   return (
     <main className={styles.wrap}>
@@ -303,6 +485,29 @@ export default function PreviewPage() {
         />
       )}
 
+      {format === 'team' && (
+        <TeamFields
+          teamName={teamName}
+          members={teamMembers}
+          builderClass={builderClass}
+          displayClass={displayClass}
+          classShuffling={classShuffling}
+          passId={passId}
+          displayPassId={displayPassId}
+          passShuffling={passShuffling}
+          onTeamNameChange={setTeamName}
+          onMemberNameChange={onMemberNameChange}
+          onMemberPhoto={onMemberPhoto}
+          onAddMember={onAddMember}
+          onRemoveMember={onRemoveMember}
+          onShuffleClass={shuffleClass}
+          onShufflePass={shufflePass}
+          ready={teamReady}
+          getTeamCanvas={() => teamRef.current}
+          onDownloaded={bump}
+        />
+      )}
+
       <div className={styles.controls}>
         <span className={styles.controlLabel}>PREVIEW SCALE:</span>
         <button
@@ -322,6 +527,26 @@ export default function PreviewPage() {
       </div>
 
       <div className={styles.row}>
+        {/* Format C sits outside the flip badge: the badge is a two-sided card
+            (Builder ID front, PFP back) and a landscape squad frame is neither
+            of its faces. */}
+        {format === 'team' ? (
+          <figure className={styles.fig}>
+            <div className={styles.figHeader}>
+              <figcaption className={styles.cap}>1200×630 · TEAM SQUAD FRAME</figcaption>
+              <span className={styles.liveBadge}>CANVAS READY</span>
+            </div>
+
+            <RevealCanvas
+              canvasRef={teamRef}
+              width={TEAM_W}
+              height={TEAM_H}
+              className={canvasClass}
+              ariaLabel="Team squad frame preview"
+              revealToken={revealToken}
+            />
+          </figure>
+        ) : (
         <FlippableBadge
           isFlipped={format === 'pfp'}
           onFlipToggle={() => setFormat(format === 'card' ? 'pfp' : 'card')}
@@ -374,6 +599,7 @@ export default function PreviewPage() {
             </figure>
           }
         />
+        )}
       </div>
     </main>
   );
