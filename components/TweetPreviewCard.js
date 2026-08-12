@@ -1,15 +1,22 @@
 'use client';
 
+import { captionFor } from './ShareButton';
 import styles from './TweetPreviewCard.module.css';
 
 /**
  * Live X (Twitter) Tweet Preview Card Component (Feature 5).
  * Gives users instant visual confidence that the tweet link preview (og:image)
  * will render crisp and correctly formatted on the X timeline.
+ *
+ * The body text comes from the same CAPTIONS map the Share button posts with,
+ * so this preview can't drift out of sync with the real tweet.
  */
-export default function TweetPreviewCard({ name, role, getCanvas, onShare }) {
+export default function TweetPreviewCard({ name, role, format = 'card' }) {
   const displayName = name.trim() || 'Jane Doe';
   const displayRole = role.trim() ? `• ${role.trim()}` : '';
+  const caption = captionFor(format);
+  // The tag is rendered as its own styled span, so strip it from the run.
+  const captionBody = caption.replace('#FrameInGoa', '').trim();
 
   return (
     <div className={styles.wrap}>
@@ -38,8 +45,8 @@ export default function TweetPreviewCard({ name, role, getCanvas, onShare }) {
 
         {/* Tweet Text */}
         <p className={styles.tweetText}>
-          Heading to Goa for Beach × Bytes! Created my official HH Goa 2026 builder card. See you at the beach 🌊💻{' '}
-          <span className={styles.hashtag}>#FrameInGoa</span> <span className={styles.mention}>@HackerHouseGoa</span>
+          {captionBody}{' '}
+          <span className={styles.hashtag}>#FrameInGoa</span>
         </p>
 
         {/* Embedded Link Preview Card */}

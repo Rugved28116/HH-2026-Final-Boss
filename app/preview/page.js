@@ -592,6 +592,7 @@ export default function PreviewPage() {
                 />
                 <ShareButton
                   getCanvas={() => pfpRef.current}
+                  format="pfp"
                   filename={FILENAMES.pfp}
                   onShared={bump}
                 />

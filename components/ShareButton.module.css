@@ -65,6 +65,33 @@
   color: var(--pink);
 }
 
+/* Confirmation state on the button itself, once X has been opened. */
+.doneBtn {
+  background: var(--green-light) !important;
+  border-color: var(--yellow) !important;
+}
+
+.pending {
+  color: var(--cream);
+  opacity: 0.85;
+  animation: pop 180ms ease-out;
+}
+
+/* Degraded-but-handled: the share failed and a download happened instead.
+   Yellow rather than pink — the user still got their graphic. */
+.fallback {
+  color: var(--yellow);
+  animation: pop 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .done,
+  .pending,
+  .fallback {
+    animation: none;
+  }
+}
+
 @keyframes pop {
   from {
     opacity: 0;

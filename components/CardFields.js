@@ -98,6 +98,7 @@ export default function CardFields({
         />
         <ShareButton
           getCanvas={getCardCanvas}
+          format="card"
           filename={FILENAMES.card}
           disabled={!ready}
           onShared={onDownloaded}
@@ -109,12 +110,7 @@ export default function CardFields({
 
       {/* Feature 5: Live X Tweet Timeline Preview Card */}
       {ready && (
-        <TweetPreviewCard
-          name={name}
-          role={role}
-          getCanvas={getCardCanvas}
-          onShare={onDownloaded}
-        />
+        <TweetPreviewCard name={name} role={role} format="card" />
       )}
     </div>
   );

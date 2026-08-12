@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import styles from './share.module.css';
 
-// The card is the taller of the two formats; X reads the declared ratio before
-// it has the bytes, so advertising 1080x1350 keeps both formats inside a
-// summary_large_image crop without letterboxing the square one.
-const OG_W = 1080;
-const OG_H = 1350;
+// Deliberately no og:image:width / og:image:height.
+//
+// The slug carries only the image URL, so this page cannot know which of the
+// three formats it is describing — 1080x1080 (PFP), 1080x1512 (Card) or
+// 1200x630 (Team). Declaring one set of dimensions would be wrong for the
+// other two, and a wrong declared ratio makes crawlers reserve the wrong box
+// and crop the graphic. They are optional hints: omitting them makes the
+// crawler fetch and measure the real image instead.
 
 /**
  * Hosts whose images this page is willing to advertise in its OG tags.
@@ -48,7 +51,9 @@ function decodeSlug(slug) {
   }
 }
 
-const TITLE = 'HH Goa 2026 — Builder ID';
+// Format-neutral: one page serves the PFP frame, the Builder ID card and the
+// Team Squad frame, and the slug doesn't say which.
+const TITLE = 'HH Goa 2026 — Beach × Bytes';
 const DESCRIPTION = 'Made with the HH Goa 2026 frame generator. Make your own in seconds.';
 
 /** schema.md §5 — the whole point of this route: OG tags X's crawler can read. */
@@ -65,7 +70,7 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: TITLE,
       description: DESCRIPTION,
-      images: [{ url: imageUrl, width: OG_W, height: OG_H }],
+      images: [{ url: imageUrl }],
     },
     twitter: {
       card: 'summary_large_image',

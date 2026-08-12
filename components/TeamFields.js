@@ -172,6 +172,7 @@ export default function TeamFields({
         />
         <ShareButton
           getCanvas={getTeamCanvas}
+          format="team"
           filename={FILENAMES.team}
           disabled={!ready}
           onShared={onDownloaded}
