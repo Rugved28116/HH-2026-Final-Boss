@@ -6,8 +6,8 @@ import styles from './BackdropDoodles.module.css';
 const MAX_SHIFT = 18;
 
 /**
- * Clean Parallax Ambient Mesh Backdrop.
- * Renders shifting light orbs, vignette, matrix grid, and top-right decals.
+ * Clean Ambient Mesh Backdrop featuring shifting light orbs, vignette,
+ * blueprint matrix grid, and top-right decals.
  */
 export default function BackdropDoodles() {
   const ref = useRef(null);

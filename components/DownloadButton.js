@@ -35,8 +35,6 @@ export default function DownloadButton({
     try {
       await downloadCanvas(canvas, filename);
       setState('done');
-      // Fire-and-forget, and only on success. Never awaited — the counter must
-      // not be able to delay or fail the download itself.
       onDownloaded?.();
     } catch {
       setState('error');

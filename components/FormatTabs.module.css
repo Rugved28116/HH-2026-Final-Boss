@@ -76,6 +76,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .indicator,
   .tab {
     transition: none;

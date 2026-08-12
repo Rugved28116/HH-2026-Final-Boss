@@ -59,7 +59,7 @@
   background: var(--cream) !important;
   color: var(--ink) !important;
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 16px;
   font-weight: 700;
   padding: 0.8rem 1rem;
   border: 2px solid var(--yellow) !important;
@@ -71,6 +71,7 @@
   visibility: visible !important;
   min-height: 48px;
   transition: border-color 150ms ease, box-shadow 150ms ease;
+  -webkit-appearance: none;
 }
 
 .input::placeholder {
@@ -129,12 +130,10 @@
   box-shadow:
     0 0 12px rgba(236, 27, 120, 0.4),
     3px 4px 0 rgba(0, 0, 0, 0.5);
-  background: linear-gradient(
-    90deg,
-    var(--ink) 0%,
-    rgba(236, 27, 120, 0.25) 50%,
-    var(--ink) 100%
-  ) !important;
+  background: linear-gradient(90deg,
+      var(--ink) 0%,
+      rgba(236, 27, 120, 0.25) 50%,
+      var(--ink) 100%) !important;
   background-size: 200% 100% !important;
   animation: rareFoilSweep 4s linear infinite;
 }

@@ -3,6 +3,8 @@
 import styles from './StickerPackPicker.module.css';
 
 export const ALL_STICKERS = [
+  { id: 'waxSeal', label: 'VIP WAX SEAL', icon: '👑' },
+  { id: 'goaBound', label: 'GOA BOUND STAMP', icon: '🚀' },
   { id: 'shield', label: 'HOTEL SHIELD', icon: '🏨' },
   { id: 'scallop', label: 'PORT STEAMSHIP', icon: '⛵' },
   { id: 'octagon', label: 'CALANGUTE RESORT', icon: '🏖️' },

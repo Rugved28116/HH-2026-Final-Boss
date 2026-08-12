@@ -149,6 +149,25 @@
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.85);
 }
 
+.holoFoil {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  z-index: 15;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.28;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.7) calc(var(--foil-pos, 50%) - 15%),
+    rgba(245, 215, 50, 0.85) var(--foil-pos, 50%),
+    rgba(236, 27, 120, 0.7) calc(var(--foil-pos, 50%) + 15%),
+    transparent 100%
+  );
+  transition: opacity 200ms ease;
+}
+
 /* Card Sway Container (3D Flip & Tilt Physics) -------------------------- */
 
 .cardSway {

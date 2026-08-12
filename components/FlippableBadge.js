@@ -8,7 +8,8 @@ import styles from './FlippableBadge.module.css';
  * Front Side: Builder ID Card (1080x1512)
  * Back Side: PFP Frame (1080x1080)
  *
- * Integrates woven lanyard strap, metallic clip, pendulum sway, and 3D Y-axis 180° card flip.
+ * Integrates woven lanyard strap, metallic clip, pendulum sway, holographic foil sheen,
+ * and 3D Y-axis 180° card flip.
  */
 export default function FlippableBadge({
   isFlipped,
@@ -19,6 +20,10 @@ export default function FlippableBadge({
 }) {
   const containerRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleFlip = () => {
+    onFlipToggle();
+  };
 
   useEffect(() => {
     const el = containerRef.current;
@@ -37,6 +42,7 @@ export default function FlippableBadge({
 
       el.style.setProperty('--sway-angle', `${currentAngle.toFixed(2)}deg`);
       el.style.setProperty('--tilt-y', `${currentTiltY.toFixed(2)}deg`);
+      el.style.setProperty('--foil-pos', `${(50 + currentTiltY * 4).toFixed(1)}%`);
 
       if (
         Math.abs(targetAngle - currentAngle) > 0.01 ||
@@ -57,8 +63,8 @@ export default function FlippableBadge({
       const rect = el.getBoundingClientRect();
       const relativeX = (e.clientX - rect.left) / rect.width - 0.5;
 
-      targetAngle = relativeX * 8;
-      targetTiltY = relativeX * 6;
+      targetAngle = relativeX * 10;
+      targetTiltY = relativeX * 8;
 
       scheduleAnimate();
     };
@@ -115,6 +121,9 @@ export default function FlippableBadge({
         {/* Slot Punch Hole on Card Header */}
         <div className={styles.slotPunch} aria-hidden="true" />
 
+        {/* Holographic Specular Foil Sheen Overlay */}
+        <div className={styles.holoFoil} aria-hidden="true" />
+
         {/* 3D Flip Container */}
         <div className={`${styles.flipCardInner} ${isFlipped ? styles.flipped : ''}`}>
           {/* Front Side: BUILDER ID CARD */}
@@ -126,7 +135,7 @@ export default function FlippableBadge({
               <button
                 type="button"
                 className={styles.flipBtn}
-                onClick={onFlipToggle}
+                onClick={handleFlip}
                 title="Flip to PFP Frame"
               >
                 🔄 FLIP TO PFP FRAME ➔
@@ -144,7 +153,7 @@ export default function FlippableBadge({
               <button
                 type="button"
                 className={styles.flipBtn}
-                onClick={onFlipToggle}
+                onClick={handleFlip}
                 title="Flip to Builder ID Card"
               >
                 🔄 FLIP TO BUILDER ID ➔
