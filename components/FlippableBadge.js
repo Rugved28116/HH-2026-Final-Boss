@@ -100,7 +100,7 @@ export default function FlippableBadge({
           <span className={styles.strapText}>HACKER HOUSE GOA 2026</span>
         </div>
         <div className={styles.strapRight}>
-          <span className={styles.strapText}>BEACH × BYTES</span>
+          <span className={styles.strapText}>HACKER HOUSE × FINAL BOSS</span>
         </div>
       </div>
 
