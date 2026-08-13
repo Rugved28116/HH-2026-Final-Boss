@@ -1,1 +1,5 @@
-export { default } from './preview/page';
+import PreviewPage from './preview/page';
+
+export default function Page() {
+  return <PreviewPage />;
+}

@@ -7,14 +7,80 @@
   z-index: -1 !important;
   pointer-events: none !important;
   overflow: hidden;
-  background: radial-gradient(circle at 50% 30%,
-      #0f4c36 0%,
-      #0b3d2b 50%,
-      #062319 100%);
+  background: #062319;
 }
 
 .backdrop * {
   pointer-events: none !important;
+}
+
+/* Background Illustration Image Layer ------------------------------------ */
+
+.bgImage {
+  position: absolute;
+  /* Generous inset covers two things: the soft edge a blur leaves at the
+     layer's bounds, and the 7px of parallax travel below. */
+  inset: -64px;
+  background-image: url('/hh-goa-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  /* The blur is load-bearing, not decoration. It does three jobs:
+     1. The source art has annotation callouts lettered into it ("Chapora
+        Fort", "Hacker Villa", "Vintage Scooter"). Unblurred they render as
+        crisp boxed labels that read as interface chips — "Chapora Fort"
+        lands beside the real `> pfp.goa[2026]` chip in the header. A
+        backdrop must never offer legible words that compete with controls.
+     2. It drops the illustration to texture, which is what design.md §4b
+        asks a backdrop for — "texture without visual noise".
+     3. The source is 1024x571. Covering a 2560px display upscales it 2.5x,
+        which would be visibly soft; blurred, there is no sharp detail left
+        for the upscale to betray. */
+  filter: blur(9px) saturate(0.82);
+  opacity: 0.62;
+
+  transform: translate3d(
+    calc(var(--par-x) * 0.4),
+    calc(var(--par-y) * 0.4),
+    0
+  );
+  will-change: transform;
+}
+
+/* Tint + scrims ---------------------------------------------------------- */
+
+.translucentOverlay {
+  position: absolute;
+  inset: 0;
+  /* Layered rather than one flat wash, so the two regions that carry real UI
+     get the most cover: the header strip and the left controls rail. The
+     centre-right stays lightest, which is where the canvas sits on its own
+     opaque card anyway. */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(6, 35, 25, 0.7) 0%,
+      rgba(6, 35, 25, 0.3) 22%,
+      rgba(6, 35, 25, 0) 42%
+    ),
+    linear-gradient(
+      90deg,
+      rgba(6, 35, 25, 0.46) 0%,
+      rgba(6, 35, 25, 0.18) 46%,
+      rgba(6, 35, 25, 0) 72%
+    ),
+    radial-gradient(
+      circle at 50% 30%,
+      rgba(15, 76, 54, 0.28) 0%,
+      rgba(11, 61, 43, 0.48) 50%,
+      rgba(6, 35, 25, 0.72) 100%
+    );
+  /* No backdrop-filter here on purpose. Blurring the layer below via
+     backdrop-filter forces the compositor to re-sample a full-viewport fixed
+     surface, which is exactly the kind of cost the 60fps target in plan.md
+     Phase 7 is protecting. `filter` on .bgImage is the cheaper, more
+     predictable way to get the same look. */
 }
 
 /* Shifting Ambient Mesh Light Orbs --------------------------------------- */
@@ -23,7 +89,9 @@
   position: absolute;
   border-radius: 50%;
   filter: blur(90px);
-  opacity: 0.28;
+  /* Eased back from 0.28: the illustration beneath is now dimmer, so the same
+     screen-blended orbs read considerably hotter than they did before. */
+  opacity: 0.2;
   mix-blend-mode: screen;
   will-change: transform;
 }
@@ -56,45 +124,21 @@
 }
 
 @keyframes orbFloat1 {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  50% {
-    transform: translate(40px, 30px) scale(1.1);
-  }
-
-  100% {
-    transform: translate(-30px, 50px) scale(0.95);
-  }
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, 30px) scale(1.1); }
+  100% { transform: translate(-30px, 50px) scale(0.95); }
 }
 
 @keyframes orbFloat2 {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  50% {
-    transform: translate(-40px, -40px) scale(1.05);
-  }
-
-  100% {
-    transform: translate(30px, -20px) scale(0.9);
-  }
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, -40px) scale(1.05); }
+  100% { transform: translate(30px, -20px) scale(0.9); }
 }
 
 @keyframes orbFloat3 {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  50% {
-    transform: translate(30px, -40px) scale(1.15);
-  }
-
-  100% {
-    transform: translate(-20px, 20px) scale(1);
-  }
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -40px) scale(1.15); }
+  100% { transform: translate(-20px, 20px) scale(1); }
 }
 
 /* Vintage Vignette Overlay ----------------------------------------------- */
@@ -121,76 +165,30 @@
 
 /* Right-Margin SVGs ------------------------------------------------------ */
 
-.backdrop svg {
-  position: absolute;
-  stroke: var(--cream);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0.14;
-  transform: translate3d(calc(var(--par-x) * var(--depth)),
-      calc(var(--par-y) * var(--depth)),
-      0);
-}
-
 .circuitChip {
+  position: absolute;
   top: 4%;
   right: 4%;
   width: clamp(100px, 10vw, 150px);
   stroke: var(--pink);
-}
-
-.frond {
-  top: -10px;
-  right: 12%;
-  width: clamp(160px, 16vw, 240px);
-  stroke: var(--yellow);
-}
-
-.decal {
-  opacity: 0.16;
-}
-
-.decalPlate {
-  fill: var(--cream);
-  fill-opacity: 0.12;
-  stroke: var(--cream);
   stroke-width: 1.5;
-}
-
-.decalMark {
-  fill: none;
-  stroke: var(--cream);
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.decalStar {
-  top: 45%;
-  right: 4%;
-  width: clamp(45px, 4vw, 65px);
-  transform: translate3d(calc(var(--par-x) * var(--depth)), calc(var(--par-y) * var(--depth)), 0) rotate(-7deg);
+  opacity: 0.14;
 }
 
 @media (max-width: 900px) {
-
-  .circuitChip,
-  .frond,
-  .decalStar {
+  .circuitChip {
     display: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .orbGold,
   .orbPink,
   .orbGreen {
     animation: none;
   }
-
-  .backdrop svg {
+  .backdrop svg,
+  .bgImage {
     transform: none !important;
   }
 }

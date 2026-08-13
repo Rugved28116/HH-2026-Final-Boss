@@ -75,6 +75,25 @@
   white-space: nowrap;
 }
 
+/* Three tabs have a min-content floor of ~427px: `white-space: nowrap` plus
+   the horizontal padding means `width: 100%` cannot shrink the grid any
+   further, so on a 360–420px phone the third tab was clipped off the edge —
+   an entire format unreachable. Tightening the type and dropping the emoji
+   brings all three inside 360px. min-height stays 46px so the tap target
+   still clears the 44px floor in design.md §11. */
+@media (max-width: 560px) {
+  .tab {
+    padding: 0.6rem 0.45rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    gap: 0;
+  }
+
+  .icon {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
   .indicator,
