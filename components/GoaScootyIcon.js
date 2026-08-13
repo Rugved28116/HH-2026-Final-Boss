@@ -1,63 +1,89 @@
 'use client';
 
 /**
- * Retro Goa Scooty (Vespa) SVG Icon.
- * Features vibrant yellow body, hot pink apron, cream headlight, and dark green chassis.
+ * Authentic Retro Vespa Scooter SVG Icon.
+ * Features the iconic bulbous side engine cowl, wide front leg-shield,
+ * chrome horn grille, dual bench seat, and round chrome headlight.
  */
-export default function GoaScootyIcon({ className = '', width = 38, height = 32 }) {
+export default function GoaScootyIcon({ className = '', width = 46, height = 36 }) {
   return (
     <svg
       width={width}
       height={height}
-      viewBox="0 0 48 40"
+      viewBox="0 0 56 44"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
-      aria-label="Goa Scooty Icon"
+      aria-label="Classic Goa Vespa Scooter"
     >
-      {/* Front Wheel */}
-      <circle cx="12" cy="32" r="5" fill="#0A2A1D" stroke="#F7F2DE" strokeWidth="2" />
-      <circle cx="12" cy="32" r="2" fill="#F5D732" />
+      {/* Ground Shadow */}
+      <ellipse cx="28" cy="39" rx="22" ry="3" fill="#000000" fillOpacity="0.25" />
 
       {/* Rear Wheel */}
-      <circle cx="36" cy="32" r="5" fill="#0A2A1D" stroke="#F7F2DE" strokeWidth="2" />
-      <circle cx="36" cy="32" r="2" fill="#F5D732" />
+      <circle cx="42" cy="33" r="6" fill="#0A2A1D" stroke="#F7F2DE" strokeWidth="2" />
+      <circle cx="42" cy="33" r="3" fill="#94A3B8" stroke="#0A2A1D" strokeWidth="1" />
+      <circle cx="42" cy="33" r="1" fill="#F5D732" />
 
-      {/* Main Body Chassis */}
+      {/* Front Wheel */}
+      <circle cx="14" cy="33" r="6" fill="#0A2A1D" stroke="#F7F2DE" strokeWidth="2" />
+      <circle cx="14" cy="33" r="3" fill="#94A3B8" stroke="#0A2A1D" strokeWidth="1" />
+      <circle cx="14" cy="33" r="1" fill="#F5D732" />
+
+      {/* Iconic Vespa Curved Bulbous Rear Side Panel (Engine Cowl) */}
       <path
-        d="M8 28C8 28 10 20 14 20C18 20 22 26 26 26H38C41 26 43 28 43 31V32H7V31C7 29 8 28 8 28Z"
+        d="M26 30C26 23 30 19 38 19C45 19 49 23 48 30C47 34 42 35 36 35C30 35 26 33 26 30Z"
         fill="#F5D732"
         stroke="#0A2A1D"
         strokeWidth="2"
       />
 
-      {/* Front Apron / Leg Shield */}
+      {/* Side Cowl Chrome Trim & Air Vent Slats */}
+      <path d="M34 24H44M35 27H43M37 30H42" stroke="#0A2A1D" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="30" cy="27" r="1.5" fill="#EC1B78" />
+
+      {/* Footrest Floorboard & Central Tunnel */}
+      <path d="M18 31H32C34 31 35 32 35 34H16C16 32 17 31 18 31Z" fill="#0A2A1D" stroke="#0A2A1D" strokeWidth="1" />
+
+      {/* Front Teardrop Mudguard (Fender) */}
+      <path d="M9 31C9 26 12 24 18 24L17 31H9Z" fill="#F5D732" stroke="#0A2A1D" strokeWidth="2" />
+
+      {/* Iconic Vespa Front Leg Shield (Apron) */}
       <path
-        d="M12 28L10 16C9.5 13 12 11 15 11H17C18 11 19 12 19 13L17 28"
+        d="M14 31L11 15C10 11 13 8 18 8H20C22 8 23 10 23 12L20 31"
         fill="#EC1B78"
         stroke="#0A2A1D"
         strokeWidth="2"
       />
 
-      {/* Scooter Leather Seat */}
+      {/* Center Horn Grille Trim */}
+      <path d="M16 10V22" stroke="#F5D732" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M16 12V20" stroke="#0A2A1D" strokeWidth="1" strokeLinecap="round" />
+
+      {/* Classic Dual Bench Seat */}
       <path
-        d="M22 24C22 22 24 21 27 21H37C39 21 40 22 40 24V26H22V24Z"
+        d="M24 20C24 17 26 15 31 15H42C45 15 47 17 46 20V21H24V20Z"
         fill="#0A2A1D"
         stroke="#F7F2DE"
         strokeWidth="1.5"
       />
+      <path d="M31 15V21" stroke="#F7F2DE" strokeWidth="1" strokeDasharray="1 1" />
 
-      {/* Handlebar & Headlight */}
-      <path d="M15 11L14 6H18L17 11" stroke="#0A2A1D" strokeWidth="2" strokeLinecap="round" />
-      <circle cx="16" cy="6" r="3.5" fill="#F7F2DE" stroke="#0A2A1D" strokeWidth="1.5" />
-      <circle cx="16" cy="6" r="1.5" fill="#F5D732" />
+      {/* Handlebar Column & Steering Stem */}
+      <path d="M17 10L16 4H20L19 10" fill="#F5D732" stroke="#0A2A1D" strokeWidth="2" />
 
-      {/* Rearview Mirror */}
-      <path d="M14 6L11 3" stroke="#0A2A1D" strokeWidth="1.5" strokeLinecap="round" />
-      <circle cx="10" cy="2" r="1.5" fill="#F7F2DE" />
+      {/* Handlebar Grips */}
+      <path d="M13 5H23" stroke="#0A2A1D" strokeWidth="2.5" strokeLinecap="round" />
 
-      {/* Goa Side Carrier / License Badge */}
-      <rect x="29" y="17" width="7" height="4" rx="1" fill="#EC1B78" stroke="#0A2A1D" strokeWidth="1" />
+      {/* Iconic Round Vespa Headlight */}
+      <circle cx="18" cy="4" r="4" fill="#F7F2DE" stroke="#0A2A1D" strokeWidth="2" />
+      <circle cx="18" cy="4" r="2.5" fill="#F5D732" />
+      <circle cx="16.5" cy="2.5" r="1" fill="#FFFFFF" />
+
+      {/* Dual Chrome Rearview Mirrors */}
+      <path d="M15 3L12 0" stroke="#0A2A1D" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="11" cy="0" r="1.5" fill="#F7F2DE" stroke="#0A2A1D" strokeWidth="1" />
+      <path d="M21 3L24 0" stroke="#0A2A1D" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="25" cy="0" r="1.5" fill="#F7F2DE" stroke="#0A2A1D" strokeWidth="1" />
     </svg>
   );
 }
