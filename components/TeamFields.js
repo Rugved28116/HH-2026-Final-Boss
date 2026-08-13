@@ -50,7 +50,7 @@ export default function TeamFields({
           type="text"
           value={teamName}
           maxLength={TEAM_NAME_MAX}
-          placeholder="Beach Bytes"
+          placeholder="Final Boss"
           onChange={(e) => onTeamNameChange(e.target.value)}
         />
       </label>

@@ -37,7 +37,7 @@ export default function CardFields({
             type="text"
             value={name}
             maxLength={NAME_MAX}
-            placeholder="Jane Doe"
+            placeholder="Your Name"
             autoComplete="name"
             onChange={(e) => onNameChange(e.target.value)}
           />
