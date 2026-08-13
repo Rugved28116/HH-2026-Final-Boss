@@ -489,11 +489,11 @@ export default function PreviewPage() {
 
       <header className={styles.topRow}>
         <div className={styles.brandLockup}>
-          <h1 className={styles.brandTitle}>HACKER HOUSE GOA</h1>
+          <h1 className={styles.brandTitle}>HACKER HOUSE</h1>
           <span className={styles.scriptAccent}>गोवा</span>
           <span className={styles.terminalChip}>&gt; {format}.goa[2026]</span>
         </div>
-        <p className={styles.eyebrow}>BEACH × BYTES</p>
+        <p className={styles.eyebrow}>HACKER HOUSE × FINAL BOSS</p>
       </header>
 
       <FormatTabs value={format} onChange={setFormat} />
