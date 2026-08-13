@@ -154,11 +154,33 @@ Format B, until Name + Stack/role are filled):
    done without opening up abuse.
 
 ### Share to X
+
+Always starts from a fresh export: any paint pending for the next animation
+frame is flushed synchronously before the canvas is read, so the shared
+image is exactly the on-screen state at click time, at full canvas
+resolution. Two tiers, chosen synchronously at click time:
+
+**Tier 1 — native share sheet (Web Share Level 2; mobile + macOS Safari).**
+1. Canvas exported to a PNG blob, wrapped in a `File`.
+2. `navigator.share({ files, text: caption })` opens the OS share sheet.
+   If the user picks the X app, the PNG is attached to the post as a real
+   photo — no upload to our storage happens at all.
+3. User dismissing the sheet = `AbortError` = their decision, not a
+   failure: reset silently. No download, and **never** the intent URL as a
+   follow-up — one click opens at most one share surface.
+4. Genuine share failure → inline message, automatic fallback to Download.
+
+**Tier 2 — OG-link intent (desktop, or wherever file share is unsupported).**
+Desktop browsers cannot attach a file to a tweet intent, so the graphic
+rides along as a rich link preview — the closest thing to "attached" that
+exists there, and the inline status says so rather than implying more.
 1. Canvas exported to a PNG blob.
 2. Blob uploaded to storage → public image URL returned.
 3. Share-landing URL constructed pointing at that image via OG tags.
 4. X's tweet-intent URL opened in a new tab, pre-filled with caption +
-   `#FrameInGoa` + the share-landing URL.
+   `#FrameInGoa` + the share-landing URL. (The tab is opened synchronously
+   inside the click gesture and navigated when the upload resolves —
+   opening it after the upload is what gets it popup-blocked.)
 5. **Failure path:** upload failure → inline message, automatic fallback
    to Download. Never a dead end.
 
