@@ -1,38 +1,16 @@
 .wrap {
   min-height: 100vh;
-  padding: 1.8rem clamp(1rem, 4vw, 3rem) 4rem;
+  padding: 1.5rem clamp(1rem, 3.5vw, 2.5rem) 4rem;
   display: flex;
   flex-direction: column;
-  gap: 1.4rem;
+  gap: 1.5rem;
   position: relative;
   z-index: 1;
-  align-items: flex-start;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
-@media (min-width: 1100px) {
-  .wrap {
-    display: grid;
-    grid-template-columns: minmax(360px, 520px) minmax(0, 1fr);
-    column-gap: clamp(2rem, 4vw, 4rem);
-    row-gap: 1.4rem;
-    align-items: start;
-    align-content: start;
-  }
-
-  .wrap>* {
-    grid-column: 1;
-  }
-
-  .wrap>.topRow {
-    grid-column: 1 / -1;
-  }
-
-  .wrap>.row {
-    grid-column: 2;
-    grid-row: 2 / span 12;
-  }
-}
-
+/* Floating Frosted Top Bar */
 .topRow {
   width: 100%;
   display: flex;
@@ -40,8 +18,53 @@
   justify-content: space-between;
   gap: 1rem;
   flex-wrap: wrap;
-  padding-bottom: 1rem;
-  border-bottom: 1.5px solid rgba(247, 242, 222, 0.15);
+  padding: 0.95rem 1.5rem;
+  background: rgba(6, 35, 25, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 20px;
+  border: 1.5px solid rgba(247, 242, 222, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+.controlRail {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.stageSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Desktop Studio 2-Column Split Layout */
+@media (min-width: 1024px) {
+  .wrap {
+    display: grid;
+    grid-template-columns: minmax(360px, 480px) minmax(0, 1fr);
+    column-gap: clamp(2rem, 4vw, 3.5rem);
+    row-gap: 1.5rem;
+    align-items: start;
+  }
+
+  .topRow {
+    grid-column: 1 / -1;
+  }
+
+  .controlRail {
+    grid-column: 1;
+  }
+
+  .stageSection {
+    grid-column: 2;
+    position: sticky;
+    top: 1.5rem;
+  }
 }
 
 .headerControls {

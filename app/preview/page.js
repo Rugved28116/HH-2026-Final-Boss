@@ -500,132 +500,132 @@ export default function PreviewPage() {
         <p className={styles.eyebrow}>HACKER HOUSE × FINAL BOSS</p>
       </header>
 
-      <FormatTabs value={format} onChange={setFormat} />
+      <aside className={styles.controlRail}>
+        <FormatTabs value={format} onChange={setFormat} />
 
-      <UploadZone onPhoto={onPhoto} fileName={fileName} />
+        <UploadZone onPhoto={onPhoto} fileName={fileName} />
 
-      {/* Feature 2: Photo Pan/Zoom Nudge Controls */}
-      {photo && (
-        <PhotoNudgeControls transform={photoTransform} onChange={setPhotoTransform} />
-      )}
-
-      {format === 'card' && (
-        <CardFields
-          name={name}
-          role={role}
-          title={title}
-          displayTitle={displayTitle}
-          shuffling={shuffling}
-          onNameChange={setName}
-          onRoleChange={setRole}
-          onShuffle={shuffle}
-          ready={ready}
-          getCardCanvas={getCardCanvas}
-          onDownloaded={bump}
-          selectedStickers={selectedStickers}
-          onStickersChange={setSelectedStickers}
-        />
-      )}
-
-      {format === 'team' && (
-        <TeamFields
-          teamName={teamName}
-          members={teamMembers}
-          builderClass={builderClass}
-          displayClass={displayClass}
-          classShuffling={classShuffling}
-          passId={passId}
-          displayPassId={displayPassId}
-          passShuffling={passShuffling}
-          onTeamNameChange={setTeamName}
-          onMemberNameChange={onMemberNameChange}
-          onMemberPhoto={onMemberPhoto}
-          onAddMember={onAddMember}
-          onRemoveMember={onRemoveMember}
-          onShuffleClass={shuffleClass}
-          onShufflePass={shufflePass}
-          ready={teamReady}
-          getTeamCanvas={getTeamCanvas}
-          onDownloaded={bump}
-        />
-      )}
-
-      <div className={styles.row}>
-        {/* Format C sits outside the flip badge: the badge is a two-sided card
-            (Builder ID front, PFP back) and a landscape squad frame is neither
-            of its faces. */}
-        {format === 'team' ? (
-          <figure className={styles.fig}>
-            <div className={styles.figHeader}>
-              <figcaption className={styles.cap}>1200×630 · TEAM SQUAD FRAME</figcaption>
-              <span className={styles.liveBadge}>CANVAS READY</span>
-            </div>
-
-            <RevealCanvas
-              canvasRef={teamRef}
-              width={TEAM_W}
-              height={TEAM_H}
-              className={canvasClass}
-              ariaLabel="Team squad frame preview"
-              revealToken={revealToken}
-            />
-          </figure>
-        ) : (
-        <FlippableBadge
-          isFlipped={format === 'pfp'}
-          onFlipToggle={() => setFormat(format === 'card' ? 'pfp' : 'card')}
-          frontContent={
-            <figure className={styles.fig}>
-              <div className={styles.figHeader}>
-                <figcaption className={styles.cap}>1080×1512 · BUILDER ID CARD</figcaption>
-                <span className={styles.liveBadge}>CANVAS READY</span>
-              </div>
-
-              <RevealCanvas
-                canvasRef={cardRef}
-                width={CARD_W}
-                height={CARD_H}
-                className={canvasClass}
-                ariaLabel="Builder ID card preview"
-                revealToken={revealToken}
-              />
-            </figure>
-          }
-          backContent={
-            <figure className={styles.fig}>
-              <div className={styles.figHeader}>
-                <figcaption className={styles.cap}>1080×1080 · PFP FRAME</figcaption>
-                <span className={styles.liveBadge}>CANVAS READY</span>
-              </div>
-
-              <RevealCanvas
-                canvasRef={pfpRef}
-                width={PFP_SIZE}
-                height={PFP_SIZE}
-                className={canvasClass}
-                ariaLabel="PFP frame preview"
-                revealToken={revealToken}
-              />
-
-              <div className={styles.pfpActions}>
-                <DownloadButton
-                  getCanvas={getPfpCanvas}
-                  filename={FILENAMES.pfp}
-                  label="DOWNLOAD"
-                  onDownloaded={bump}
-                />
-                <ShareButton
-                  getCanvas={getPfpCanvas}
-                  format="pfp"
-                  filename={FILENAMES.pfp}
-                  onShared={bump}
-                />
-              </div>
-            </figure>
-          }
-        />
+        {photo && (
+          <PhotoNudgeControls transform={photoTransform} onChange={setPhotoTransform} />
         )}
-      </div>
+
+        {format === 'card' && (
+          <CardFields
+            name={name}
+            role={role}
+            title={title}
+            displayTitle={displayTitle}
+            shuffling={shuffling}
+            onNameChange={setName}
+            onRoleChange={setRole}
+            onShuffle={shuffle}
+            ready={ready}
+            getCardCanvas={getCardCanvas}
+            onDownloaded={bump}
+            selectedStickers={selectedStickers}
+            onStickersChange={setSelectedStickers}
+          />
+        )}
+
+        {format === 'team' && (
+          <TeamFields
+            teamName={teamName}
+            members={teamMembers}
+            builderClass={builderClass}
+            displayClass={displayClass}
+            classShuffling={classShuffling}
+            passId={passId}
+            displayPassId={displayPassId}
+            passShuffling={passShuffling}
+            onTeamNameChange={setTeamName}
+            onMemberNameChange={onMemberNameChange}
+            onMemberPhoto={onMemberPhoto}
+            onAddMember={onAddMember}
+            onRemoveMember={onRemoveMember}
+            onShuffleClass={shuffleClass}
+            onShufflePass={shufflePass}
+            ready={teamReady}
+            getTeamCanvas={getTeamCanvas}
+            onDownloaded={bump}
+          />
+        )}
+      </aside>
+
+      <section className={styles.stageSection}>
+        <div className={styles.row}>
+          {format === 'team' ? (
+            <figure className={styles.fig}>
+              <div className={styles.figHeader}>
+                <figcaption className={styles.cap}>1200×630 · TEAM SQUAD FRAME</figcaption>
+                <span className={styles.liveBadge}>CANVAS READY</span>
+              </div>
+
+              <RevealCanvas
+                canvasRef={teamRef}
+                width={TEAM_W}
+                height={TEAM_H}
+                className={canvasClass}
+                ariaLabel="Team squad frame preview"
+                revealToken={revealToken}
+              />
+            </figure>
+          ) : (
+            <FlippableBadge
+              isFlipped={format === 'pfp'}
+              onFlipToggle={() => setFormat(format === 'card' ? 'pfp' : 'card')}
+              frontContent={
+                <figure className={styles.fig}>
+                  <div className={styles.figHeader}>
+                    <figcaption className={styles.cap}>1080×1512 · BUILDER ID CARD</figcaption>
+                    <span className={styles.liveBadge}>CANVAS READY</span>
+                  </div>
+
+                  <RevealCanvas
+                    canvasRef={cardRef}
+                    width={CARD_W}
+                    height={CARD_H}
+                    className={canvasClass}
+                    ariaLabel="Builder ID card preview"
+                    revealToken={revealToken}
+                  />
+                </figure>
+              }
+              backContent={
+                <figure className={styles.fig}>
+                  <div className={styles.figHeader}>
+                    <figcaption className={styles.cap}>1080×1080 · PFP FRAME</figcaption>
+                    <span className={styles.liveBadge}>CANVAS READY</span>
+                  </div>
+
+                  <RevealCanvas
+                    canvasRef={pfpRef}
+                    width={PFP_SIZE}
+                    height={PFP_SIZE}
+                    className={canvasClass}
+                    ariaLabel="PFP frame preview"
+                    revealToken={revealToken}
+                  />
+
+                  <div className={styles.pfpActions}>
+                    <DownloadButton
+                      getCanvas={getPfpCanvas}
+                      filename={FILENAMES.pfp}
+                      label="DOWNLOAD"
+                      onDownloaded={bump}
+                    />
+                    <ShareButton
+                      getCanvas={getPfpCanvas}
+                      format="pfp"
+                      filename={FILENAMES.pfp}
+                      onShared={bump}
+                    />
+                  </div>
+                </figure>
+              }
+            />
+          )}
+        </div>
+      </section>
     </main>
   );
 }
