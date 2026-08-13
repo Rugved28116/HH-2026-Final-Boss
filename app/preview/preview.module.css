@@ -93,21 +93,28 @@
 
 .scriptAccent {
   font-family: var(--font-script), cursive;
-  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  font-size: 1.6rem;
   font-weight: 700;
-  color: var(--yellow);
-  background: var(--pink);
-  padding: 0.1rem 0.85rem;
-  border-radius: 999px;
-  border: 2px solid var(--cream);
-  box-shadow:
-    3px 3px 0 rgba(0, 0, 0, 0.4),
-    0 0 16px rgba(236, 27, 120, 0.65);
-  transform: rotate(-3deg);
+  color: var(--pink);
+  transform: rotate(-4deg);
+  display: inline-block;
+  text-shadow: 1.5px 2px 0 var(--green-deep);
+}
+
+.scootyBadge {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  line-height: 1;
+  gap: 0.35rem;
+}
+
+.scootyIcon {
+  transform: rotate(-2deg);
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.4));
+  transition: transform 200ms ease;
+}
+
+.scootyIcon:hover {
+  transform: rotate(2deg) scale(1.08);
 }
 
 .terminalChip {
