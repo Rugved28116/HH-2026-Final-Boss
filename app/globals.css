@@ -102,11 +102,9 @@ select {
      --font-* variables that next/font injects, so usage reads as intent. */
   --font-display: var(--font-fraunces), Georgia, 'Times New Roman', serif;
   --font-script: var(--font-kalam), cursive;
-  --font-tag: var(--font-space-mono), ui-monospace, 'SFMono-Regular', Menlo,
-    monospace;
+  --font-tag: var(--font-space-grotesk), var(--font-space-mono), sans-serif;
   --font-lcd: var(--font-vt323), ui-monospace, monospace;
-  --font-body: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, sans-serif;
+  --font-body: var(--font-space-grotesk), var(--font-inter), sans-serif;
 }
 
 /* Base ------------------------------------------------------------------- */

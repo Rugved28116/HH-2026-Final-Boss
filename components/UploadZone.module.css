@@ -61,19 +61,20 @@
 
 .title {
   font-family: var(--font-tag);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   color: var(--yellow);
+  text-shadow: 0 2px 8px rgba(245, 215, 50, 0.35);
 }
 
 .hint {
   font-family: var(--font-tag);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   letter-spacing: 0.06em;
+  font-weight: 500;
   color: var(--cream);
-  opacity: 0.7;
-  overflow-wrap: anywhere;
+  opacity: 0.85;
 }
 
 .error {
