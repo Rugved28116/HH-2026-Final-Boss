@@ -221,24 +221,28 @@
 }
 
 .cardFront {
-  position: relative;
-  z-index: 2;
+  transform-style: preserve-3d;
 }
 
 .cardBack {
-  position: absolute;
-  top: 0;
-  left: 0;
   transform: rotateY(180deg);
+  transform-style: preserve-3d;
 }
 
 .activeFace {
+  position: relative;
+  z-index: 2;
   pointer-events: auto;
   opacity: 1;
   visibility: visible;
 }
 
 .inactiveFace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1;
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
