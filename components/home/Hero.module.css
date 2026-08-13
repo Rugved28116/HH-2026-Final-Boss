@@ -20,8 +20,12 @@
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  /* The graceful-degradation layer AND the letterbox colour. The artwork's own
-     field is this exact green, so the bands `contain` leaves are invisible. */
+  /* Doubles as the no-image fallback and as the mount the letterboxed artwork
+     sits on. Measured, not assumed: the illustration's field is #025029, a
+     good deal lighter than this token, so the bands do NOT disappear — they
+     read as a dark mount around a framed poster, which is why this stays
+     --green-deep (the same ground as <body>) rather than trying and failing to
+     colour-match the artwork. */
   background: var(--green-deep);
 }
 
@@ -235,6 +239,23 @@
 @keyframes cueBob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(8px); }
+}
+
+/* Portrait phones ---------------------------------------------------------
+   A 3:2 landscape frame cannot fill a portrait viewport without cropping its
+   own border off, so it letterboxes to a band roughly a third of a full-height
+   hero — leaving a lot of dead ground. Shortening the hero and tightening the
+   padding packs the composition around that band instead, and has the useful
+   side effect of bringing the generator closer to the top of the scroll. */
+@media (max-width: 700px) {
+  .hero {
+    min-height: 76svh;
+    padding: clamp(2rem, 6vh, 3.5rem) 1rem;
+  }
+
+  .content {
+    gap: clamp(0.7rem, 1.6vh, 1rem);
+  }
 }
 
 /* Reduced motion --------------------------------------------------------- */
