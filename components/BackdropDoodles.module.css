@@ -18,10 +18,8 @@
 
 .bgImage {
   position: absolute;
-  /* Generous inset covers two things: the soft edge a blur leaves at the
-     layer's bounds, and the 7px of parallax travel below. */
   inset: -64px;
-  background-image: url('/hh-goa-bg.jpg');
+  background-image: url('/hero-bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

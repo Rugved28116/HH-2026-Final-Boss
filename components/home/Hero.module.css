@@ -35,14 +35,8 @@
 }
 
 .bgImg {
-  /* contain at EVERY breakpoint, not just mobile. The illustration is a frame
-     with its content on the edges — church and surfboard bottom-left,
-     lighthouse and the BUILD/COLLABORATE/INNOVATE signposts bottom-right. At
-     ~3:2 against a 16:9 desktop viewport, `cover` crops ~200px vertically and
-     slices the top and bottom border off. Letterboxing costs nothing here
-     because the bands match the section behind them. */
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center 35%;
 }
 
 /* Parallax only where there's a mouse. The extra vertical inset gives the

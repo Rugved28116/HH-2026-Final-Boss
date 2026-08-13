@@ -16,6 +16,7 @@ import { FILENAMES } from '@/lib/export/download';
 import { flickerCandidates, poolFor, rollTitle } from '@/lib/title/pools';
 import { flickerPassIds, rollPassId } from '@/lib/team/passId';
 import { resolveCanvasFonts } from '@/lib/render/canvasFonts';
+import { loadPfpFrameBgImage } from '@/lib/render/bgImage';
 import { getQrCanvas } from '@/lib/render/qr';
 import { PFP_SIZE, drawPfpFrame } from '@/lib/render/pfp';
 import { CARD_W, CARD_H, CARD_QR_SIZE } from '@/lib/render/card';
@@ -235,6 +236,7 @@ export default function GeneratorTool({
       const [fonts, qr] = await Promise.all([
         resolveCanvasFonts(),
         getQrCanvas(CARD_QR_SIZE),
+        loadPfpFrameBgImage(),
       ]);
       if (cancelled) return;
       fontsRef.current = fonts;

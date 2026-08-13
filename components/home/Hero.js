@@ -3,7 +3,6 @@
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { m } from 'framer-motion';
-import FramesCounter from '@/components/FramesCounter';
 import { useScrollParallax, usePointerParallax } from '@/lib/motion/parallax';
 import { usePrefersReducedMotion } from '@/lib/motion/usePrefersReducedMotion';
 import {
@@ -107,21 +106,7 @@ const Hero = forwardRef(function Hero({ count }, ref) {
             Turn your photo into an official HH Goa 2026 graphic in seconds.
           </m.p>
 
-          {/* The variant goes on the wrapper, not the anchor: framer writes an
-              inline transform, which would beat the anchor's CSS hover lift. */}
-          <m.div className={styles.ctaRow} variants={v.item}>
-            <a className={styles.cta} href="#generator">
-              Start Building <span aria-hidden="true">↓</span>
-            </a>
-          </m.div>
 
-          {/* min-height reserves the row before the count arrives, so the
-              late-resolving ribbon can't shift the CTA above it. */}
-          <m.div className={styles.counterSlot} variants={v.item}>
-            <div className={reduced ? undefined : styles.counterPulse}>
-              <FramesCounter count={count} />
-            </div>
-          </m.div>
         </m.div>
       </div>
 
