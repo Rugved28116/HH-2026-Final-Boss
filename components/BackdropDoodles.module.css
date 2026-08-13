@@ -18,31 +18,17 @@
 
 .bgImage {
   position: absolute;
-  /* Generous inset covers two things: the soft edge a blur leaves at the
-     layer's bounds, and the 7px of parallax travel below. */
-  inset: -64px;
+  inset: -15px;
   background-image: url('/hh-goa-bg.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
-  /* The blur is load-bearing, not decoration. It does three jobs:
-     1. The source art has annotation callouts lettered into it ("Chapora
-        Fort", "Hacker Villa", "Vintage Scooter"). Unblurred they render as
-        crisp boxed labels that read as interface chips — "Chapora Fort"
-        lands beside the real `> pfp.goa[2026]` chip in the header. A
-        backdrop must never offer legible words that compete with controls.
-     2. It drops the illustration to texture, which is what design.md §4b
-        asks a backdrop for — "texture without visual noise".
-     3. The source is 1024x571. Covering a 2560px display upscales it 2.5x,
-        which would be visibly soft; blurred, there is no sharp detail left
-        for the upscale to betray. */
-  filter: blur(9px) saturate(0.82);
-  opacity: 0.62;
+  filter: blur(0px) brightness(0.92) contrast(1.05) saturate(1.08);
+  opacity: 0.92;
 
   transform: translate3d(
-    calc(var(--par-x) * 0.4),
-    calc(var(--par-y) * 0.4),
+    calc(var(--par-x) * 0.2),
+    calc(var(--par-y) * 0.2),
     0
   );
   will-change: transform;
@@ -53,34 +39,20 @@
 .translucentOverlay {
   position: absolute;
   inset: 0;
-  /* Layered rather than one flat wash, so the two regions that carry real UI
-     get the most cover: the header strip and the left controls rail. The
-     centre-right stays lightest, which is where the canvas sits on its own
-     opaque card anyway. */
   background:
     linear-gradient(
       180deg,
-      rgba(6, 35, 25, 0.7) 0%,
-      rgba(6, 35, 25, 0.3) 22%,
-      rgba(6, 35, 25, 0) 42%
-    ),
-    linear-gradient(
-      90deg,
-      rgba(6, 35, 25, 0.46) 0%,
-      rgba(6, 35, 25, 0.18) 46%,
-      rgba(6, 35, 25, 0) 72%
+      rgba(6, 35, 25, 0.45) 0%,
+      rgba(6, 35, 25, 0.15) 30%,
+      rgba(6, 35, 25, 0.1) 70%,
+      rgba(6, 35, 25, 0.45) 100%
     ),
     radial-gradient(
-      circle at 50% 30%,
-      rgba(15, 76, 54, 0.28) 0%,
-      rgba(11, 61, 43, 0.48) 50%,
-      rgba(6, 35, 25, 0.72) 100%
+      circle at 50% 50%,
+      rgba(6, 35, 25, 0) 20%,
+      rgba(6, 35, 25, 0.35) 80%,
+      rgba(6, 35, 25, 0.55) 100%
     );
-  /* No backdrop-filter here on purpose. Blurring the layer below via
-     backdrop-filter forces the compositor to re-sample a full-viewport fixed
-     surface, which is exactly the kind of cost the 60fps target in plan.md
-     Phase 7 is protecting. `filter` on .bgImage is the cheaper, more
-     predictable way to get the same look. */
 }
 
 /* Shifting Ambient Mesh Light Orbs --------------------------------------- */
