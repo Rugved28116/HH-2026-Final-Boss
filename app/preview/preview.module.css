@@ -93,10 +93,28 @@
 
 .scriptAccent {
   font-family: var(--font-script), cursive;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
+  font-weight: 700;
   color: var(--pink);
   transform: rotate(-4deg);
   display: inline-block;
+  text-shadow: 1.5px 2px 0 var(--green-deep);
+}
+
+.scootyBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.palmIcon {
+  transform: rotate(-2deg);
+  filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.4));
+  transition: transform 200ms ease;
+}
+
+.palmIcon:hover {
+  transform: rotate(4deg) scale(1.1);
 }
 
 .terminalChip {
