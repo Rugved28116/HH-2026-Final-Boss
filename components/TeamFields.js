@@ -84,7 +84,7 @@ export default function TeamFields({
                 type="text"
                 value={member.name}
                 maxLength={MEMBER_NAME_MAX}
-                placeholder={i === 0 ? 'Your name' : `Member ${i + 1} name`}
+                placeholder={i === 0 ? 'Puneet Superstar' : `Member ${i + 1} name`}
                 onChange={(e) => onMemberNameChange(i, e.target.value)}
               />
 

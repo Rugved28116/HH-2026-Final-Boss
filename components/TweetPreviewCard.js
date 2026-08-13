@@ -24,7 +24,7 @@ function shareDomain() {
  * so this preview can't drift out of sync with the real tweet.
  */
 export default function TweetPreviewCard({ name, role, format = 'card' }) {
-  const displayName = name.trim() || 'Jane Doe';
+  const displayName = name.trim() || 'Puneet Superstar';
   const displayRole = role.trim() ? `• ${role.trim()}` : '';
   const caption = captionFor(format);
   // The tag is rendered as its own styled span, so strip it from the run.

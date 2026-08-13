@@ -127,7 +127,7 @@ export default function PreviewPage() {
         photoTransform: p.photoTransform,
         selectedStickers: p.selectedStickers,
         fields: {
-          name: p.name.trim() || 'Your Name',
+          name: p.name.trim() || 'Puneet Superstar',
           role: p.role.trim() || 'Your Role',
           builderTitle: p.title.text ? p.title : { text: 'roll a title', tier: 'common' },
         },
