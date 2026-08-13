@@ -7,7 +7,14 @@
   max-width: 100%;
   padding-top: 55px; /* Clean space for lanyard strap & clip */
   perspective: 1400px;
-  margin: 0 auto;
+  /* 40px drop for the whole assembly. The strap and clip are absolutely
+     positioned against this stage, so moving the stage carries them and the
+     card down together and leaves their relative spacing untouched — which is
+     why this is a margin on the stage rather than extra padding-top, which
+     would have pushed only the card away from the lanyard.
+     Written as a shorthand because the `0 auto` it replaces would otherwise
+     reset any separately-declared margin-top. */
+  margin: 40px auto 0;
 }
 
 /* Woven Lanyard Strap ---------------------------------------------------- */
