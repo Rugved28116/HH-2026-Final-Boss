@@ -6,7 +6,7 @@ import CardFields from '@/components/CardFields';
 import DownloadButton from '@/components/DownloadButton';
 import FormatTabs from '@/components/FormatTabs';
 import FlippableBadge from '@/components/FlippableBadge';
-import GoaScootyIcon from '@/components/GoaScootyIcon';
+import GoaPalmIcon from '@/components/GoaPalmIcon';
 import PhotoNudgeControls from '@/components/PhotoNudgeControls';
 import RevealCanvas from '@/components/RevealCanvas';
 import ShareButton from '@/components/ShareButton';
@@ -493,7 +493,7 @@ export default function PreviewPage() {
           <h1 className={styles.brandTitle}>HACKER HOUSE</h1>
           <span className={styles.scootyBadge}>
             <span className={styles.scriptAccent}>गोवा</span>
-            <GoaScootyIcon className={styles.scootyIcon} />
+            <GoaPalmIcon className={styles.palmIcon} />
           </span>
           <span className={styles.terminalChip}>&gt; {format}.goa[2026]</span>
         </div>

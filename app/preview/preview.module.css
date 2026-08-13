@@ -107,14 +107,14 @@
   gap: 0.35rem;
 }
 
-.scootyIcon {
+.palmIcon {
   transform: rotate(-2deg);
   filter: drop-shadow(2px 3px 0 rgba(0, 0, 0, 0.4));
   transition: transform 200ms ease;
 }
 
-.scootyIcon:hover {
-  transform: rotate(2deg) scale(1.08);
+.palmIcon:hover {
+  transform: rotate(4deg) scale(1.1);
 }
 
 .terminalChip {
