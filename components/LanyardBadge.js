@@ -87,10 +87,10 @@ export default function LanyardBadge({ children, className = '' }) {
       {/* Woven Festival Lanyard Strap */}
       <div className={styles.lanyardStrap} aria-hidden="true">
         <div className={styles.strapLeft}>
-          <span className={styles.strapText}>HACKER HOUSE GOA 2026 • BEACH × BYTES •</span>
+          <span className={styles.strapText}>HACKER HOUSE GOA 2026</span>
         </div>
         <div className={styles.strapRight}>
-          <span className={styles.strapText}>HACKER HOUSE GOA 2026 • BEACH × BYTES •</span>
+          <span className={styles.strapText}>HACKER HOUSE × FINAL BOSS</span>
         </div>
       </div>
 

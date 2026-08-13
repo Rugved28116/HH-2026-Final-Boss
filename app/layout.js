@@ -1,4 +1,5 @@
 import { fontClassNames } from '@/lib/fonts';
+import SmoothScroll from '@/components/SmoothScroll';
 import './globals.css';
 
 export const metadata = {
@@ -20,7 +21,9 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={fontClassNames}>
-      <body>{children}</body>
+      <body>
+        <SmoothScroll>{children}</SmoothScroll>
+      </body>
     </html>
   );
 }

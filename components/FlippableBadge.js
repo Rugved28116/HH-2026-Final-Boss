@@ -94,22 +94,27 @@ export default function FlippableBadge({
 
   return (
     <div className={`${styles.badgeStage} ${className}`}>
-      {/* Woven Festival Lanyard Strap */}
+      {/* Premium Woven Festival Lanyard Strap */}
       <div className={styles.lanyardStrap} aria-hidden="true">
         <div className={styles.strapLeft}>
-          <span className={styles.strapText}>HACKER HOUSE GOA 2026 • BEACH × BYTES •</span>
+          <span className={styles.strapText}>HACKER HOUSE GOA 2026</span>
         </div>
         <div className={styles.strapRight}>
-          <span className={styles.strapText}>HACKER HOUSE GOA 2026 • BEACH × BYTES •</span>
+          <span className={styles.strapText}>HACKER HOUSE × FINAL BOSS</span>
         </div>
       </div>
 
-      {/* Metallic Clip & Ring */}
+      {/* Metallic Swivel Carabiner Clip & Ring Assembly */}
       <div className={styles.clipGroup} aria-hidden="true">
-        <div className={styles.lanyardRing} />
+        <div className={styles.lanyardRing}>
+          <div className={styles.ringInner} />
+        </div>
         <div className={styles.metallicClip}>
-          <div className={styles.clipSpring} />
-          <div className={styles.clipJaw} />
+          <div className={styles.clipSwivel} />
+          <div className={styles.clipBody}>
+            <div className={styles.clipSpring} />
+          </div>
+          <div className={styles.clipHook} />
         </div>
       </div>
 
