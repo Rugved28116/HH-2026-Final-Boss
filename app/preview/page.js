@@ -168,6 +168,10 @@ export default function PreviewPage() {
     return () => mq.removeEventListener('change', sync);
   }, []);
 
+  // Dev-only escape hatch, no longer surfaced in the UI. `?zoom=full` renders
+  // the canvas at 1:1 so new visual work can be checked at actual export
+  // resolution rather than scaled down in the page — the convention CLAUDE.md
+  // sets for canvas changes, and what the headless screenshot recipe drives.
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('zoom') === 'full') setZoom('full');
   }, []);
@@ -507,24 +511,6 @@ export default function PreviewPage() {
           onDownloaded={bump}
         />
       )}
-
-      <div className={styles.controls}>
-        <span className={styles.controlLabel}>PREVIEW SCALE:</span>
-        <button
-          type="button"
-          className={zoom === 'fit' ? styles.btnActive : styles.btn}
-          onClick={() => setZoom('fit')}
-        >
-          FIT VIEW
-        </button>
-        <button
-          type="button"
-          className={zoom === 'full' ? styles.btnActive : styles.btn}
-          onClick={() => setZoom('full')}
-        >
-          100% SCALE
-        </button>
-      </div>
 
       <div className={styles.row}>
         {/* Format C sits outside the flip badge: the badge is a two-sided card
