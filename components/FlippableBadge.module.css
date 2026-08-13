@@ -5,15 +5,8 @@
   align-items: center;
   width: fit-content;
   max-width: 100%;
-  padding-top: 55px; /* Clean space for lanyard strap & clip */
+  padding-top: 60px; /* Clean space for lanyard strap & clip */
   perspective: 1400px;
-  /* 40px drop for the whole assembly. The strap and clip are absolutely
-     positioned against this stage, so moving the stage carries them and the
-     card down together and leaves their relative spacing untouched — which is
-     why this is a margin on the stage rather than extra padding-top, which
-     would have pushed only the card away from the lanyard.
-     Written as a shorthand because the `0 auto` it replaces would otherwise
-     reset any separately-declared margin-top. */
   margin: 40px auto 0;
 }
 
@@ -21,11 +14,11 @@
 
 .lanyardStrap {
   position: absolute;
-  top: -40px;
+  top: -45px;
   left: 50%;
   transform: translateX(-50%);
-  width: 260px;
-  height: 95px;
+  width: 240px;
+  height: 105px;
   pointer-events: none;
   z-index: 2;
   display: flex;
@@ -36,19 +29,14 @@
 .strapRight {
   position: absolute;
   top: 0;
-  width: 34px;
-  height: 95px;
-  background: repeating-linear-gradient(
-    135deg,
-    var(--ink),
-    var(--ink) 12px,
-    var(--pink) 12px,
-    var(--pink) 24px,
-    var(--yellow) 24px,
-    var(--yellow) 36px
-  );
-  border: 2px solid var(--cream);
-  box-shadow: 3px 5px 10px rgba(0, 0, 0, 0.45);
+  width: 30px;
+  height: 105px;
+  background: 
+    linear-gradient(90deg, var(--yellow) 0, var(--yellow) 2.5px, transparent 2.5px, transparent calc(100% - 2.5px), var(--pink) calc(100% - 2.5px)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 5px),
+    linear-gradient(180deg, #061a12 0%, #0b3d2b 50%, #0a2a1d 100%);
+  border: 1px solid rgba(247, 242, 222, 0.25);
+  box-shadow: 2px 6px 14px rgba(0, 0, 0, 0.55);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -56,17 +44,17 @@
 }
 
 .strapLeft {
-  left: 85px;
-  transform: rotate(20deg);
+  left: 75px;
+  transform: rotate(14deg);
   transform-origin: bottom right;
-  border-radius: 6px 0 0 6px;
+  border-radius: 4px 0 0 4px;
 }
 
 .strapRight {
-  right: 85px;
-  transform: rotate(-20deg);
+  right: 75px;
+  transform: rotate(-14deg);
   transform-origin: bottom left;
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 4px 4px 0;
 }
 
 .strapText {
@@ -74,20 +62,19 @@
   font-size: 0.58rem;
   font-weight: 700;
   color: var(--cream);
-  background: rgba(10, 42, 29, 0.85);
-  padding: 0.2rem 0.5rem;
+  letter-spacing: 0.18em;
   white-space: nowrap;
-  transform: rotate(-90deg);
-  letter-spacing: 0.12em;
-  border-radius: 4px;
-  border: 1px solid rgba(247, 242, 222, 0.4);
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+  opacity: 0.92;
 }
 
 /* Metallic Clip & Ring --------------------------------------------------- */
 
 .clipGroup {
   position: absolute;
-  top: 38px;
+  top: 42px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 30;
@@ -98,46 +85,73 @@
 }
 
 .lanyardRing {
-  width: 22px;
-  height: 22px;
-  border: 3px solid #f5d732;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
-  background: var(--ink);
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, #f5d732 35%, #b8960c 75%, #4a3a00 100%);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.ringInner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--green-deep);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .metallicClip {
-  width: 30px;
-  height: 30px;
-  background: linear-gradient(135deg, #ffffff 0%, #d4d4d4 40%, #888888 100%);
-  border: 2px solid var(--ink);
-  border-radius: 5px;
-  margin-top: -5px;
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.55),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -6px;
   position: relative;
+  z-index: 2;
+}
+
+.clipSwivel {
+  width: 16px;
+  height: 8px;
+  background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 50%, #64748b 100%);
+  border-radius: 3px 3px 1px 1px;
+  border: 1px solid var(--ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.clipBody {
+  width: 24px;
+  height: 22px;
+  background: linear-gradient(135deg, #ffffff 0%, #e2e8f0 40%, #94a3b8 80%, #475569 100%);
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .clipSpring {
   position: absolute;
-  top: 4px;
-  left: 4px;
-  right: 4px;
-  height: 7px;
-  background: var(--pink);
-  border-radius: 3px;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  height: 5px;
+  background: linear-gradient(90deg, var(--pink), #f43f5e);
+  border-radius: 2px;
   border: 1px solid var(--ink);
 }
 
-.clipJaw {
-  position: absolute;
-  bottom: 0;
-  left: 3px;
-  right: 3px;
-  height: 9px;
-  background: var(--ink);
-  border-radius: 0 0 3px 3px;
+.clipHook {
+  width: 14px;
+  height: 16px;
+  border: 3px solid #475569;
+  border-top: none;
+  border-radius: 0 0 7px 7px;
+  margin-top: -3px;
+  background: transparent;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.4);
 }
 
 /* Slot Punch Hole -------------------------------------------------------- */
