@@ -16,7 +16,7 @@ const CAPTIONS = {
   team: 'Squad assembled for HH Goa 2026 🌴👥 #FrameInGoa',
 };
 
-/** The exact text the intent composer will be pre-filled with. */
+/** The exact text the share composer will be pre-filled with. */
 export function captionFor(format) {
   return CAPTIONS[format] || CAPTIONS.pfp;
 }
@@ -29,14 +29,45 @@ export function tweetIntentUrl(format, shareUrl) {
 }
 
 /**
- * Share to X (app-flow.md §6).
+ * Whether this browser can hand a PNG File to the native share sheet
+ * (Web Share Level 2 — in practice: mobile, plus macOS Safari).
  *
- * Exports the active canvas, uploads it for a public URL, then sends the user
- * to X's intent composer with the /s/[slug] link. That page carries the
- * og:image tags, which is what puts the graphic in the tweet's link preview
- * instead of posting a bare text tweet.
+ * Probed with an empty stand-in File: canShare validates type support, not
+ * content, so the check is synchronous and free. It must be synchronous,
+ * because the two paths diverge before the first await — the intent path has
+ * to open its tab inside the click gesture, while the share-sheet path must
+ * not open a tab at all.
+ */
+function canShareFile(filename) {
+  if (
+    typeof navigator === 'undefined' ||
+    typeof navigator.share !== 'function' ||
+    typeof navigator.canShare !== 'function'
+  ) {
+    return false;
+  }
+  try {
+    return navigator.canShare({
+      files: [new File([new Blob()], filename, { type: 'image/png' })],
+    });
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Share to X (app-flow.md §6). Two tiers:
  *
- * Never a dead end: any upload failure falls back to a plain download.
+ * 1. Web Share with a File, where supported — the native sheet, and if the
+ *    user picks the X app the PNG is attached to the post as a real photo.
+ * 2. Otherwise (desktop): upload to blob → /s/[slug] OG page → tweet intent.
+ *    Desktop browsers cannot attach a file to an intent URL at all, so a rich
+ *    link preview is the closest thing to "attached" that exists there.
+ *
+ * The two never chain: a dismissed or failed share sheet does not then open
+ * an intent tab — one click means at most one share surface.
+ *
+ * Never a dead end: real failures on either path fall back to a download.
  */
 export default function ShareButton({
   getCanvas,
@@ -47,16 +78,61 @@ export default function ShareButton({
   filename = FILENAMES.card,
   onShared,
 }) {
-  const [state, setState] = useState('idle'); // idle | uploading | done | fallback | error
+  // idle | sharing (native sheet) | uploading (intent path) | shared | done | fallback | error
+  const [state, setState] = useState('idle');
   const timer = useRef(0);
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
+  const fallBackToDownload = useCallback(
+    async (canvas) => {
+      try {
+        await downloadCanvas(canvas, filename);
+        setState('fallback');
+        onShared?.();
+      } catch (downloadErr) {
+        console.error('[ShareButton] download fallback also failed:', downloadErr);
+        setState('error');
+      }
+    },
+    [filename, onShared]
+  );
+
   const onClick = useCallback(async () => {
+    // getCanvas flushes any pending render first (see flushRender in the
+    // preview page), so the export is the exact bitmap on screen — never one
+    // keystroke behind. toBlob then reads the full-resolution bitmap, not the
+    // CSS-scaled display size.
     const canvas = getCanvas();
     if (!canvas) return;
 
     clearTimeout(timer.current);
+
+    /* Tier 1 — native share sheet with the PNG as a real file. */
+    if (canShareFile(filename)) {
+      setState('sharing');
+      try {
+        const blob = await canvasToPngBlob(canvas);
+        const file = new File([blob], filename, { type: 'image/png' });
+        await navigator.share({ files: [file], text: captionFor(format) });
+        setState('shared');
+        onShared?.();
+      } catch (err) {
+        if (err?.name === 'AbortError') {
+          // The user closed the sheet. Their decision, not a failure — reset
+          // silently, and do not counter it with a download or an intent tab.
+          setState('idle');
+          return;
+        }
+        console.error('[ShareButton] Web Share failed, falling back to download:', err);
+        await fallBackToDownload(canvas);
+      }
+      timer.current = setTimeout(() => setState('idle'), CONFIRM_MS);
+      // Whatever happened above, the intent path must not also run.
+      return;
+    }
+
+    /* Tier 2 — upload → OG landing page → tweet intent. */
     setState('uploading');
 
     // Opened synchronously, inside the click handler, so the browser still
@@ -106,33 +182,41 @@ export default function ShareButton({
       console.error('[ShareButton] upload failed, falling back to download:', err);
       // A blank tab left open reads as a broken share.
       tab?.close();
-
-      try {
-        await downloadCanvas(canvas, filename);
-        setState('fallback');
-        onShared?.();
-      } catch (downloadErr) {
-        console.error('[ShareButton] download fallback also failed:', downloadErr);
-        setState('error');
-      }
+      await fallBackToDownload(canvas);
     }
 
     timer.current = setTimeout(() => setState('idle'), CONFIRM_MS);
-  }, [getCanvas, filename, format, onShared]);
+  }, [getCanvas, filename, format, onShared, fallBackToDownload]);
+
+  const busy = state === 'sharing' || state === 'uploading';
+  const succeeded = state === 'shared' || state === 'done';
 
   return (
     <span className={styles.wrap}>
       <button
         type="button"
-        className={`${className} ${styles.button} ${state === 'done' ? styles.doneBtn : ''}`}
+        className={`${className} ${styles.button} ${succeeded ? styles.doneBtn : ''}`}
         onClick={onClick}
-        disabled={disabled || state === 'uploading'}
+        disabled={disabled || busy}
       >
-        {state === 'uploading' ? 'UPLOADING…' : state === 'done' ? 'OPENED X ↗' : label}
+        {state === 'sharing'
+          ? 'OPENING SHARE…'
+          : state === 'uploading'
+            ? 'UPLOADING…'
+            : state === 'shared'
+              ? 'SHARED ✓'
+              : state === 'done'
+                ? 'OPENED X ↗'
+                : label}
       </button>
 
       <span className={styles.status} role="status" aria-live="polite">
         {state === 'uploading' && <span className={styles.pending}>Uploading your graphic…</span>}
+        {/* Honest about what the intent path can deliver: the graphic rides
+            along as a link preview, not as an attached photo. */}
+        {state === 'done' && (
+          <span className={styles.pending}>Opened X — your graphic will show as a preview</span>
+        )}
         {state === 'fallback' && (
           <span className={styles.fallback}>Share unavailable — downloaded file ✓</span>
         )}

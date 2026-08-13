@@ -158,6 +158,40 @@ export default function PreviewPage() {
     paintRaf.current = requestAnimationFrame(paint);
   }, [paint]);
 
+  // Export-time freshness guarantee. Paints are deferred to the next animation
+  // frame, so a Download/Share click that lands between a state change and its
+  // rAF would export the previous frame — one keystroke behind what the user
+  // sees an instant later. Flushing synchronously closes that window.
+  //
+  // The other half of the race (state committed but drawParams not yet synced)
+  // can't happen on a click: React flushes pending passive effects before
+  // dispatching the next discrete event, so by the time any click handler
+  // runs, the drawParams effect has already run and at most the rAF is
+  // outstanding. paint() zeroes paintRaf itself.
+  const flushRender = useCallback(() => {
+    if (paintRaf.current) {
+      cancelAnimationFrame(paintRaf.current);
+      paint();
+    }
+  }, [paint]);
+
+  // Every export consumer goes through these, so Download and Share can never
+  // capture a stale bitmap. The canvases are exported at their intrinsic
+  // resolution (1080×1080 / 1080×1512 / 1200×630) — toBlob reads the bitmap,
+  // not the CSS-scaled display size.
+  const getCardCanvas = useCallback(() => {
+    flushRender();
+    return cardRef.current;
+  }, [flushRender]);
+  const getPfpCanvas = useCallback(() => {
+    flushRender();
+    return pfpRef.current;
+  }, [flushRender]);
+  const getTeamCanvas = useCallback(() => {
+    flushRender();
+    return teamRef.current;
+  }, [flushRender]);
+
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     const sync = () => {
@@ -168,6 +202,10 @@ export default function PreviewPage() {
     return () => mq.removeEventListener('change', sync);
   }, []);
 
+  // Dev-only escape hatch, no longer surfaced in the UI. `?zoom=full` renders
+  // the canvas at 1:1 so new visual work can be checked at actual export
+  // resolution rather than scaled down in the page — the convention CLAUDE.md
+  // sets for canvas changes, and what the headless screenshot recipe drives.
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('zoom') === 'full') setZoom('full');
   }, []);
@@ -478,7 +516,7 @@ export default function PreviewPage() {
           onRoleChange={setRole}
           onShuffle={shuffle}
           ready={ready}
-          getCardCanvas={() => cardRef.current}
+          getCardCanvas={getCardCanvas}
           onDownloaded={bump}
           selectedStickers={selectedStickers}
           onStickersChange={setSelectedStickers}
@@ -503,28 +541,10 @@ export default function PreviewPage() {
           onShuffleClass={shuffleClass}
           onShufflePass={shufflePass}
           ready={teamReady}
-          getTeamCanvas={() => teamRef.current}
+          getTeamCanvas={getTeamCanvas}
           onDownloaded={bump}
         />
       )}
-
-      <div className={styles.controls}>
-        <span className={styles.controlLabel}>PREVIEW SCALE:</span>
-        <button
-          type="button"
-          className={zoom === 'fit' ? styles.btnActive : styles.btn}
-          onClick={() => setZoom('fit')}
-        >
-          FIT VIEW
-        </button>
-        <button
-          type="button"
-          className={zoom === 'full' ? styles.btnActive : styles.btn}
-          onClick={() => setZoom('full')}
-        >
-          100% SCALE
-        </button>
-      </div>
 
       <div className={styles.row}>
         {/* Format C sits outside the flip badge: the badge is a two-sided card
@@ -585,13 +605,13 @@ export default function PreviewPage() {
 
               <div className={styles.pfpActions}>
                 <DownloadButton
-                  getCanvas={() => pfpRef.current}
+                  getCanvas={getPfpCanvas}
                   filename={FILENAMES.pfp}
                   label="DOWNLOAD"
                   onDownloaded={bump}
                 />
                 <ShareButton
-                  getCanvas={() => pfpRef.current}
+                  getCanvas={getPfpCanvas}
                   format="pfp"
                   filename={FILENAMES.pfp}
                   onShared={bump}

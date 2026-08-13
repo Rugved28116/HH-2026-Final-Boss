@@ -3,6 +3,18 @@
 import { captionFor } from './ShareButton';
 import styles from './TweetPreviewCard.module.css';
 
+// The domain X shows under the link card. Derived from the same env var the
+// share route builds shareUrl from, so this mock can't contradict the real
+// tweet; the fallback matches QR_TARGET_URL's (lib/render/qr.js).
+// NEXT_PUBLIC_* is inlined at build time, so this is safe in a client file.
+function shareDomain() {
+  try {
+    return new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://hhgoa2026.vercel.app/').host;
+  } catch {
+    return 'hhgoa2026.vercel.app';
+  }
+}
+
 /**
  * Live X (Twitter) Tweet Preview Card Component (Feature 5).
  * Gives users instant visual confidence that the tweet link preview (og:image)
@@ -49,14 +61,15 @@ export default function TweetPreviewCard({ name, role, format = 'card' }) {
           <span className={styles.hashtag}>#FrameInGoa</span>
         </p>
 
-        {/* Embedded Link Preview Card */}
+        {/* Embedded Link Preview Card — mirrors the real OG tags served by
+            /s/[slug], so what the user sees here is what X will render. */}
         <div className={styles.mediaCard}>
           <div className={styles.mediaHeader}>
-            <span className={styles.mediaTitle}>HH Goa 2026 — Builder Card</span>
-            <span className={styles.mediaDomain}>hhgoa.com</span>
+            <span className={styles.mediaTitle}>HH Goa 2026 — Beach × Bytes</span>
+            <span className={styles.mediaDomain}>{shareDomain()}</span>
           </div>
           <p className={styles.mediaDesc}>
-            Check out my official HH Goa 2026 Builder Card! Generated instantly without accounts or waiting.
+            Made with the HH Goa 2026 frame generator. Make your own in seconds.
           </p>
         </div>
 
