@@ -1,5 +1,5 @@
-import PreviewPage from './preview/page';
+import HomeShell from '@/components/home/HomeShell';
 
 export default function Page() {
-  return <PreviewPage />;
+  return <HomeShell />;
 }

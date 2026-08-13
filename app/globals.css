@@ -13,6 +13,18 @@ body {
   overflow-x: hidden;
 }
 
+/* Lets the hero CTA and the sticky header's "Generator ↓" reach the tool with
+   a plain href="#generator" — no scroll JS anywhere in the app. */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -74,6 +86,9 @@ select {
   --cream: #f7f2de;
   --white: #ffffff;
   --ink: #0a2a1d;
+
+  /* Height of the sticky header, so anchored sections can offset by it. */
+  --header-h: 60px;
 
   /* Semantic type roles — docs/design.md §3. Reference these, not the raw
      --font-* variables that next/font injects, so usage reads as intent. */

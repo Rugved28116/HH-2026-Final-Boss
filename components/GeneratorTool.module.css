@@ -1,6 +1,8 @@
 .wrap {
   min-height: 100vh;
   padding: 1.8rem clamp(1rem, 4vw, 3rem) 4rem;
+  /* Anchored from the hero CTA; keep the heading clear of the sticky bar. */
+  scroll-margin-top: calc(var(--header-h, 60px) + 12px);
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
@@ -31,6 +33,18 @@
     grid-column: 2;
     grid-row: 2 / span 12;
   }
+}
+
+/* The scroll-reveal wrapper around the tabs + dropzone. It is a new direct
+   child of .wrap, so it inherits `.wrap > * { grid-column: 1 }` correctly, but
+   it also has to reproduce the column layout its children used to get from
+   .wrap itself — they are now one level deeper. */
+.revealRail {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.4rem;
+  width: 100%;
 }
 
 .topRow {

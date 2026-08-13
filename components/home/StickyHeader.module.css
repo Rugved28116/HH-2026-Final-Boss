@@ -1,0 +1,98 @@
+.bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Clears .wrap's z-index: 1 and the hero's stacking context. */
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: var(--header-h, 60px);
+  padding: 0.5rem clamp(0.85rem, 4vw, 3rem);
+  /* layout.js already sets viewportFit: 'cover', so the notch inset matters. */
+  padding-top: calc(0.5rem + env(safe-area-inset-top, 0px));
+  background: rgba(10, 42, 29, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1.5px solid rgba(247, 242, 222, 0.18);
+}
+
+/* The circular stamp-seal motif (design.md §4b) as a small logo mark — cream
+   outline plus the flat offset shadow used everywhere else. */
+.mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 2px solid var(--cream);
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.35);
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 900;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+.name {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(0.95rem, 2.4vw, 1.15rem);
+  color: var(--yellow);
+  text-shadow: 1.5px 2px 0 var(--green-deep);
+  white-space: nowrap;
+}
+
+.jump {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  font-family: var(--font-tag);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--yellow);
+  border: 2px solid var(--cream);
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  transition:
+    transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 140ms ease-out;
+}
+
+.jump:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.45);
+}
+
+.jump:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .name {
+    /* The mark plus the jump link are the load-bearing parts on a phone. */
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jump {
+    transition: box-shadow 140ms ease-out;
+  }
+
+  .jump:hover {
+    transform: none;
+  }
+}

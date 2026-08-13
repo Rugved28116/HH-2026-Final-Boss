@@ -7,7 +7,47 @@ submission, and the moment of getting a result should feel like a payoff.
 
 ---
 
-## 0. Entry
+## 0. Hero
+
+The homepage is one continuous scroll: **hero → generator**, not two pages.
+(`/preview` renders the generator alone and is the harness the canvas work is
+verified against — it deliberately has no hero.)
+
+- **Background:** `public/hero-bg.jpg`, the illustrated Goa scene, letterboxed
+  (`object-fit: contain`) at **every** breakpoint rather than cropped. The
+  artwork is a *frame* — church and surfboard bottom-left, lighthouse and the
+  BUILD/COLLABORATE/INNOVATE signposts bottom-right, palms in the top corners —
+  so `cover` would slice its own border off on any viewport wider or taller
+  than ~3:2. The letterbox bands cost nothing because the illustration's field
+  is the same `green-deep` as the section behind it. If the file is missing the
+  hero renders as flat green with all content intact.
+- **Entrance:** framer-motion stagger, ~120ms between children, each fading up
+  20px on a spring — eyebrow → headline → subhead → CTA → counter, everything
+  settled well inside design.md §10's budget. The headline animates per word.
+- **CTA** "Start Building ↓" is a plain `href="#generator"`; smooth scrolling
+  is `html { scroll-behavior: smooth }` with a reduced-motion override, so
+  there is no scroll JS anywhere in the app.
+- **Live counter** (D4) appears last in the stagger and pops once. Its row is
+  height-reserved, so the late-resolving ribbon cannot shift the CTA above it.
+- **Parallax**, desktop only, listeners fully detached elsewhere: the
+  background drifts at 0.3× scroll (capped), and the text block leans a few px
+  away from the cursor.
+- **Scroll cue** bobs at the hero's base and fades once the hero is mostly out
+  of view. Driven by an IntersectionObserver writing a data attribute, never
+  React state — it fires on scroll, and re-rendering here would re-render the
+  generator below it.
+- **Sticky header** slides in past the hero (logo mark + "Frame In Goa" +
+  "Generator ↓"). It owns its own visibility state for the same reason.
+- **The generator stays interactive throughout.** The two are independent; the
+  tool is usable before the hero has finished animating.
+- **Reduced motion:** no parallax, no bob, no pop, and the stagger collapses so
+  content simply appears. `MotionConfig reducedMotion="user"` makes every
+  framer transform instant while opacity still animates — framer ignores the OS
+  setting entirely without it.
+
+---
+
+## 0b. Entry
 
 - User lands on the page directly. No splash, no gate, no login.
 - Background doodles (palm fronds, sun rays — `design.md` §4) are

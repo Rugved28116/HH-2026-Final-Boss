@@ -1,0 +1,271 @@
+.hero {
+  position: relative;
+  z-index: 1;
+  /* svh, not dvh: dvh re-resizes as the mobile URL bar hides, which would
+     thrash layout on every scroll. vh first as the old-browser fallback. */
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: clamp(4rem, 10vh, 7rem) clamp(1rem, 4vw, 3rem);
+  isolation: isolate;
+}
+
+/* Background ------------------------------------------------------------- */
+
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  /* The graceful-degradation layer AND the letterbox colour. The artwork's own
+     field is this exact green, so the bands `contain` leaves are invisible. */
+  background: var(--green-deep);
+}
+
+.bgInner {
+  position: absolute;
+  inset: 0;
+}
+
+.bgImg {
+  /* contain at EVERY breakpoint, not just mobile. The illustration is a frame
+     with its content on the edges — church and surfboard bottom-left,
+     lighthouse and the BUILD/COLLABORATE/INNOVATE signposts bottom-right. At
+     ~3:2 against a 16:9 desktop viewport, `cover` crops ~200px vertically and
+     slices the top and bottom border off. Letterboxing costs nothing here
+     because the bands match the section behind them. */
+  object-fit: contain;
+  object-position: center;
+}
+
+/* Parallax only where there's a mouse. The extra vertical inset gives the
+   image room to travel; with `contain` any exposed edge is matching green
+   anyway, so this is belt-and-braces. */
+@media (pointer: fine) {
+  .bgInner {
+    inset: -70px 0;
+    transform: translate3d(0, var(--par-scroll-y, 0px), 0);
+    will-change: transform;
+  }
+}
+
+/* Legibility scrim: light over the open middle, heavier at the bottom where
+   the CTA and counter sit over the busier shoreline detail. */
+.scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(11, 61, 43, 0.5) 0%,
+      rgba(11, 61, 43, 0.28) 32%,
+      rgba(11, 61, 43, 0.46) 72%,
+      rgba(11, 61, 43, 0.78) 100%
+    );
+}
+
+/* Content ---------------------------------------------------------------- */
+
+.pointerLayer {
+  position: relative;
+  width: 100%;
+  /* Wide enough to keep "FRAME IN GOA" on one line at desktop sizes; it still
+     wraps naturally on narrow viewports, which reads fine. */
+  max-width: 1120px;
+  transform: translate3d(var(--par-x, 0px), var(--par-y, 0px), 0);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.9rem, 2.2vh, 1.4rem);
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0;
+  font-family: var(--font-tag);
+  font-size: clamp(0.62rem, 1.5vw, 0.78rem);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--yellow);
+}
+
+.headline {
+  /* flex + column-gap rather than inline spans with whitespace: inline-block
+     words separated by source whitespace collapse unpredictably. */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: 0.28em;
+  row-gap: 0;
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 900;
+  font-size: clamp(2.9rem, 12vw, 8rem);
+  line-height: 0.94;
+  letter-spacing: 0.01em;
+  color: var(--yellow);
+  /* The house display treatment: flat offset, no blur (design.md §6).
+     Expressed in em so the offset stays proportional across the clamp range —
+     .brandTitle's 2px/3px at ~2rem is the same ratio.
+     --ink rather than --green-deep: the shadow elsewhere sits on the lighter
+     green gradient, but here the field behind it IS green-deep (both in the
+     artwork and in the no-image fallback), where that shadow is invisible.
+     --ink is the palette's near-black green, so this stays on-brand. */
+  text-shadow: 0.042em 0.058em 0 var(--ink);
+}
+
+.word {
+  /* transform (the variant's y) does not apply to an inline box. */
+  display: inline-block;
+}
+
+.subhead {
+  margin: 0;
+  max-width: 34ch;
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 2.2vw, 1.15rem);
+  line-height: 1.5;
+  color: var(--cream);
+}
+
+.ctaRow {
+  display: flex;
+  justify-content: center;
+}
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 52px;
+  padding: 0.9rem 2rem;
+  border-radius: 999px;
+  font-family: var(--font-tag);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 2px solid var(--cream);
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.4);
+  transition:
+    transform 140ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 140ms ease-out,
+    background 140ms ease-out;
+}
+
+.cta:hover {
+  transform: translateY(-2px);
+  background: #ffe347;
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.5);
+}
+
+.cta:active {
+  transform: translate(1px, 2px);
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.35);
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 3px;
+}
+
+/* Reserves the row before the counter resolves — the ribbon renders null until
+   the fetch lands, and without this the CTA above it would shift. */
+.counterSlot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.counterPulse {
+  animation: counterPop 620ms cubic-bezier(0.34, 1.56, 0.64, 1) 1;
+}
+
+@keyframes counterPop {
+  0% { transform: scale(0.92); }
+  55% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Scroll cue ------------------------------------------------------------- */
+
+.cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 3vh, 2rem);
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0.85;
+  transition: opacity 320ms ease-out;
+  pointer-events: none;
+}
+
+.cue[data-hidden='true'] {
+  opacity: 0;
+}
+
+.cueText {
+  font-family: var(--font-tag);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--cream);
+}
+
+.cueChevron {
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--yellow);
+  animation: cueBob 2.2s ease-in-out infinite;
+}
+
+@keyframes cueBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* Reduced motion --------------------------------------------------------- */
+/* design.md §10 — the static version has to hold up on its own, so the CTA
+   keeps its shadow change on hover even with the lift removed. */
+@media (prefers-reduced-motion: reduce) {
+  .bgInner {
+    inset: 0;
+    transform: none;
+    will-change: auto;
+  }
+
+  .pointerLayer {
+    transform: none;
+    transition: none;
+  }
+
+  .cueChevron {
+    animation: none;
+  }
+
+  .counterPulse {
+    animation: none;
+  }
+
+  .cta {
+    transition: box-shadow 140ms ease-out, background 140ms ease-out;
+  }
+
+  .cta:hover,
+  .cta:active {
+    transform: none;
+  }
+}
