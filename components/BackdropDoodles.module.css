@@ -18,17 +18,17 @@
 
 .bgImage {
   position: absolute;
-  inset: -15px;
+  inset: 0;
   background-image: url('/hh-goa-bg.jpg');
-  background-size: cover;
-  background-position: center;
+  background-size: 100% 100%;
+  background-position: center center;
   background-repeat: no-repeat;
-  filter: blur(0px) brightness(0.92) contrast(1.05) saturate(1.08);
-  opacity: 0.92;
+  filter: blur(0px) brightness(0.96) contrast(1.05) saturate(1.05);
+  opacity: 0.98;
 
   transform: translate3d(
-    calc(var(--par-x) * 0.2),
-    calc(var(--par-y) * 0.2),
+    calc(var(--par-x) * 0.15),
+    calc(var(--par-y) * 0.15),
     0
   );
   will-change: transform;
@@ -39,20 +39,12 @@
 .translucentOverlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(6, 35, 25, 0.45) 0%,
-      rgba(6, 35, 25, 0.15) 30%,
-      rgba(6, 35, 25, 0.1) 70%,
-      rgba(6, 35, 25, 0.45) 100%
-    ),
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(6, 35, 25, 0) 20%,
-      rgba(6, 35, 25, 0.35) 80%,
-      rgba(6, 35, 25, 0.55) 100%
-    );
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(6, 35, 25, 0.05) 0%,
+    rgba(6, 35, 25, 0.2) 65%,
+    rgba(6, 35, 25, 0.45) 100%
+  );
 }
 
 /* Shifting Ambient Mesh Light Orbs --------------------------------------- */
